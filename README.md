@@ -4,10 +4,10 @@ Uses expressjs, sequelize, graphql
 
 installation.
 
-npm init
+`npm init`
 
-npm run start
+`npm run start`
 
 requires postgresql to be installed.
 
-Change postgres settings in ./models/index.js
+Change postgres settings in `./models/index.js`
