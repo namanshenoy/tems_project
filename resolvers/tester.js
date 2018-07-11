@@ -5,9 +5,10 @@ export default {
       include: [
         {
           model: models.Slot, as: 'Slots',
-          include: {
-            model: models.Board, as: 'Boards'
-          }
+          include: [
+            { model: models.Board, as: 'Boards' },
+            { model: models.Monitor, as: 'Monitors' }
+          ]
         },
         { 
           model: models.Warning,
@@ -24,9 +25,10 @@ export default {
       include: [
         {
           model: models.Slot, as: 'Slots',
-          include: {
-            model: models.Board, as: 'Boards'
-          }
+          include: [
+            { model: models.Board, as: 'Boards' },
+            { model: models.Monitor, as: 'Monitors' }
+          ]
         },
         { 
           model: models.Warning,

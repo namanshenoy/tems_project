@@ -4,6 +4,7 @@ type Slot{
   slotNumber: Int!
   tester_id: Int
   Boards: [Board!]
+  Monitors: [Monitor!]
 }
 
 type Query{
