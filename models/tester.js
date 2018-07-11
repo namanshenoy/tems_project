@@ -13,7 +13,6 @@ export default (sequelize, DataTypes) => {
   Tester.associate = (models) => {
     //1:M
     models.Tester.hasMany(models.Slot, {as: 'Slots', sourceKey: 'id'})
-    models.Tester.hasOne(models.BoardHandler, {as: 'BoardHandler', sourceKey: 'id'})
   }
   return Tester
-  }
+}
