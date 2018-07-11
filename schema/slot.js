@@ -2,7 +2,7 @@ export default `
 type Slot{
   id: Int!
   slotNumber: Int!
-  tester_id: Int @relation(name: "TesterOnSlot")
+  tester_id: Int
 }
 
 type Query{

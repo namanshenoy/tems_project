@@ -2,7 +2,7 @@ export default `
 type Tester{
   id: Int!
   name: String!
-  Slots: [Slot]! @relation(name: "TesterOnSlot")
+  Slots: [Slot]!
   igxlVersion: String
   #faults: [Faults]
   Warnings: [Warning]
