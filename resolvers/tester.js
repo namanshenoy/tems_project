@@ -46,7 +46,24 @@ export default {
   },
   Mutation: {
     // Tester Meta
-    createTester: (parent, args, {models}) => models.Tester.create(args) ,
+    createTester: (parent, args, {models}) => models.Tester.create(args),
+
+    updateTester: async (parent, args, {models}) => {
+      try {
+        await models.tester.update(...args, {where: {name}})
+        return true
+      }
+      catch(err){
+        console.log("Could not update tester!")
+        console.log(err)
+        return false
+      }
+    },
+
+    setStatus: (parent, {status, name}, {models}) => models.Tester.update(
+      {status},
+      {where: {name}}
+    ),
 
     // Tester Slot Mutations
     addTesterSlot: async (parent, {slotId, testerName}, {models}) => {

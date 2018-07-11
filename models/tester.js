@@ -7,7 +7,8 @@ export default (sequelize, DataTypes) => {
     igxlVersion: {
       type: DataTypes.STRING,
       field: 'igxl_version'
-    }
+    },
+    status: DataTypes.STRING
   })
 
   Tester.associate = (models) => {

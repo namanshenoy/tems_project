@@ -5,7 +5,6 @@ export default `
     value: Int!
     unit: String!
     name: String!
-
   }
 
   type Query{

@@ -6,6 +6,7 @@ type Tester{
   igxlVersion: String
   Faults: [Fault]
   Warnings: [Warning]
+  status: String
 }
 
 type Query {
@@ -18,6 +19,8 @@ type Query {
 type Mutation {
 # Tester Meta
   createTester(name: String!, igxlVersion: String): Tester!
+  updateTester(name: String!, status:String, igxlVersion: String): Boolean!
+  setStatus(status: String!, name: String!): Boolean!
 
 # Tester Slots
   addTesterSlot(slotId: Int!, testerName: String!): Boolean!
