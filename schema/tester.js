@@ -7,6 +7,7 @@ type Tester{
   Faults: [Fault]
   Warnings: [Warning]
   status: String
+  model: String
 }
 
 type Query {
@@ -18,8 +19,8 @@ type Query {
 
 type Mutation {
 # Tester Meta
-  createTester(name: String!, igxlVersion: String): Tester!
-  updateTester(name: String!, status:String, igxlVersion: String): Boolean!
+  createTester(name: String!, igxlVersion: String, model: String): Tester!
+  updateTester(name: String!, status:String, igxlVersion: String, model: String): Boolean!
   setTesterStatus(status: String!, name: String!): Boolean!
 
 # Tester Slots

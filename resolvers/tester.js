@@ -50,7 +50,7 @@ export default {
 
     updateTester: async (parent, args, {models}) => {
       try {
-        await models.tester.update(...args, {where: {name}})
+        await models.Tester.update({...args}, {where: {name:args.name}})
         return true
       }
       catch(err){

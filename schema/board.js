@@ -2,6 +2,10 @@ export default `
   type Board{
     id: Int!
     boardId: String!
+    name: String
+    partNumber: String
+    rev: String
+    sector: String
   }
 
   type Query{
@@ -9,6 +13,6 @@ export default `
   }
 
   type Mutation{
-    createBoard(testerId: Int!, slotId: Int!, boardId: String!): Boolean!
+    createBoard(testerId: Int!, slotId: Int!, boardId: String!, name: String, partNumber: String, rev: String, sector: String): Boolean!
   }
 `

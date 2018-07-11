@@ -50,6 +50,25 @@ app.post('/TEST_CELL/:testerName/INITIALIZATION', (req, res) => {
   res.sendStatus(200)
   console.log("Tester: " + req.params.testerName)
   console.log(res.body)
+  //  updateTester(name: String!, status:String, igxlVersion: String, model: String): Boolean!
+})
+
+app.post('/TEST_CELL/:testerName/CONFIGURATION', (req, res) => {
+  console.log(req.originalUrl);
+  res.sendStatus(200)
+  console.log("Tester: " + req.params.testerName)
+
+  helpers.graphqlQuery(host, PORT, graphqlEndpoint, 
+    `mutation {
+      updateTester: updateTester(name:"${req.params.testerName}", igxlVersion:"${req.body.TESTER_CONTROLLER_SW.Version}", model:"${req.body.TESTER_MODEL}")
+    }`
+  )
+  .then(response => {
+    const updated = response.data.data.updateTester
+  })
+  .catch(error=>{
+    console.log("Error found in CONFIGURATION endpoint!\n", error)
+  })
 })
 
 app.post('/TEST_CELL/:testerName/STATUS', (req, res) => {
@@ -64,20 +83,14 @@ app.post('/TEST_CELL/:testerName/STATUS', (req, res) => {
       const updated = response.data.data.updateStatus
       // console.log("Was " + req.params.testerName + " updated? " + updated)
       if (!updated){
-        helpers.graphqlQuery(host, PORT, graphqlEndpoint, 
-          `mutation {
-            created:createTester(name:"${req.params.testerName}"){id}
-          }`
-        )
-          .then(t => console.log("Created new tester: ", req.params.testerName))
-          .catch(err => console.log("Error createing tester in status!\n", err))
+        helpers.createTester(host, PORT, graphqlEndpoint, req.params.testerName)
       }
     })
     .catch(err => console.log("Error in Status API!\n", err))
 })
 
 
-models.sequelize.sync({force: false }).then(data =>{
+models.sequelize.sync({force: true }).then(data =>{
   app.listen(PORT, '0.0.0.0')
   console.log(`App is listening at port ${PORT}`)
 })
