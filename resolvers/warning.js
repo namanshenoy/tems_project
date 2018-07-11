@@ -9,12 +9,12 @@ export default {
       models.Tester.findOne({where: {id: testerId}}).then(t => {
         t.addWarnings(w)
       })
-      return w
+      return true
      }
      catch (err) {
-       console.log("Error in mutation: createSlot")
+       console.log("Error in mutation: createFault")
        console.log(err)
-       return null
+       return false
      }
     }
   }

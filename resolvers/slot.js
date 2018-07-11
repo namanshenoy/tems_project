@@ -2,7 +2,7 @@ export default {
   Query: {
     //getSlot(tester: Tester!, slotNumber: Int!): Slot!
     //getAllSlots(tester: Tester!): [Slot!]!
-    getSlot: async (parent, {slotNumber, testerId}, {models}) => {
+    getSlot: (parent, {slotNumber, testerId}, {models}) => {
       try{
         return models.Slot.findOne({
           where: {

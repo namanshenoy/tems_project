@@ -6,7 +6,17 @@ export default (sequelize, DataTypes) => {
     },
     value:  DataTypes.INTEGER,
     monitor: DataTypes.INTEGER,
-    date: DataTypes.DATE,
+    date: {
+      type: DataTypes.DATE,
+      get () {
+        const d = this.getDataValue('date');
+        console.log("DATE: ",d)
+        if (d==null){
+          return 'Setting Date. Please Try again'
+        }
+        return d.toString();
+      }
+    }
   })
 
   Fault.associate = (models) => {

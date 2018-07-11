@@ -1,6 +1,6 @@
 export default (sequelize, DataTypes) => {
   const Board = sequelize.define('board', {
-    name: DataTypes.STRING,
+    boardId:{type: DataTypes.STRING, field: "board_id"},
   })
 
   Board.associate = (models) => {

@@ -1,7 +1,7 @@
 export default `
   type Warning{
-    id: Int!,
-    message: String!,
+    id: Int!
+    message: String!
     date: String
   }
 

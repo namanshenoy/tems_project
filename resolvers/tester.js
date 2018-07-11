@@ -1,9 +1,44 @@
 export default {
   Query: {
     // Tester Meta
-    getTesterById: (parent, {id}, {models}) =>   models.Tester.findById(id, {include: {all: true}}),
+    getTesterById: (parent, {id}, {models}) =>   models.Tester.findById(id, {
+      include: [
+        {
+          model: models.Slot, as: 'Slots',
+          include: {
+            model: models.Board, as: 'Boards'
+          }
+        },
+        { 
+          model: models.Warning,
+          as: 'Warnings'
+        },
+        { 
+          model: models.Fault,
+          as: 'Faults'
+        },
+    ]
+    }),
 
-    getTesterByName: (parent, {name}, {models}) => models.Tester.findOne({where: {name}, include: {all:true}}),
+    getTesterByName: (parent, {name}, {models}) => models.Tester.findOne({where: {name}, 
+      include: [
+        {
+          model: models.Slot, as: 'Slots',
+          include: {
+            model: models.Board, as: 'Boards'
+          }
+        },
+        { 
+          model: models.Warning,
+          as: 'Warnings'
+        },
+        { 
+          model: models.Fault,
+          as: 'Faults'
+        },
+      ]
+    }
+    ),
 
     getAllTesters: (parent, args, {models}) => models.Tester.findAll(),
   },

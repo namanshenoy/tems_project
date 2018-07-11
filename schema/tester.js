@@ -4,7 +4,7 @@ type Tester{
   name: String!
   Slots: [Slot]!
   igxlVersion: String
-  #faults: [Faults]
+  Faults: [Fault]
   Warnings: [Warning]
 }
 

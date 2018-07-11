@@ -3,6 +3,7 @@ type Slot{
   id: Int!
   slotNumber: Int!
   tester_id: Int
+  Boards: [Board!]
 }
 
 type Query{
