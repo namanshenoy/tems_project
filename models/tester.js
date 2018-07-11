@@ -2,28 +2,28 @@ export default (sequelize, DataTypes) => {
   const Tester = sequelize.define('tester', {
     name: {
       type: DataTypes.STRING,
-      unique: true
+      unique: true,
     },
     igxlVersion: {
       type: DataTypes.STRING,
-      field: 'igxl_version'
+      field: 'igxl_version',
     },
     status: DataTypes.STRING,
     model: DataTypes.STRING,
   })
 
   Tester.associate = (models) => {
-    //1:M
+    // 1:M
     // Each Tester has Many Slots
-    models.Tester.hasMany(models.Slot, {as: 'Slots', sourceKey: 'id'})
+    models.Tester.hasMany(models.Slot, { as: 'Slots', sourceKey: 'id' })
 
-    //1:M
+    // 1:M
     // Each Tester has Many Faults
-    models.Tester.hasMany(models.Fault, {as: 'Faults', sourceKey: 'id'})
+    models.Tester.hasMany(models.Fault, { as: 'Faults', sourceKey: 'id' })
 
-    //1:M
+    // 1:M
     // Each Tester has Many Warnings
-    models.Tester.hasMany(models.Warning, {as: 'Warnings', sourceKey: 'id'})
+    models.Tester.hasMany(models.Warning, { as: 'Warnings', sourceKey: 'id' })
   }
   return Tester
 }

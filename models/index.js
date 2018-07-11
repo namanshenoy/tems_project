@@ -1,12 +1,10 @@
 import Sequelize from 'sequelize'
 
-var sequelize = new Sequelize('tems', 'postgres', 'postgres', {
+const sequelize = new Sequelize('tems', 'postgres', 'postgres', {
   dialect: 'postgres',
   logging: false,
-  define: {
-    underscored: true
-  }
-});
+  define: { underscored: true },
+})
 
 const models = {
   Tester: sequelize.import('./tester'),
@@ -18,13 +16,13 @@ const models = {
   Label: sequelize.import('./label'),
 }
 
-Object.keys(models).forEach(modelName => {
+Object.keys(models).forEach((modelName) => {
   if (models[modelName].associate) {
-    models[modelName].associate(models);
+    models[modelName].associate(models)
   }
-});
+})
 
-models.sequelize = sequelize;
-models.Sequelize = Sequelize;
+models.sequelize = sequelize
+models.Sequelize = Sequelize
 
 export default models
