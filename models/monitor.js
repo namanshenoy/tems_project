@@ -8,10 +8,11 @@ export default (sequelize, DataTypes) => {
 
   Monitor.associate = (models) => {
     //1:M
-    /* models.Monitor.belongsTo(models.Tester, {
+    // Each Slot has Many Monitors
+    models.Monitor.belongsTo(models.Slot, {
       onDelete: "CASCADE",
       targetKey: 'id'
-    }) */
+    })
   }
 
   return Monitor

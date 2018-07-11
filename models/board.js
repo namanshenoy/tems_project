@@ -5,10 +5,11 @@ export default (sequelize, DataTypes) => {
 
   Board.associate = (models) => {
     //1:M
-    /* models.Board.belongsTo(models.Tester, {
+    // Each Slot has Many Boards
+    models.Board.belongsTo(models.Slot, {
       onDelete: "CASCADE",
       targetKey: 'id'
-    }) */
+    })
   }
 
   return Board

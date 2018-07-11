@@ -10,11 +10,12 @@ export default (sequelize, DataTypes) => {
   })
 
   Fault.associate = (models) => {
-    //1:M
-    /* models.Fault.belongsTo(models.Tester, {
+   //1:M
+    // Each Tester has Many Faults
+    models.Fault.belongsTo(models.Tester, {
       onDelete: "CASCADE",
       targetKey: 'id'
-    }) */
+    })
   }
 
   return Fault

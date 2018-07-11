@@ -6,10 +6,11 @@ export default (sequelize, DataTypes) => {
 
   Warning.associate = (models) => {
     //1:M
-    /* models.Warning.belongsTo(models.Tester, {
+    // Each Slot has Many Monitors
+    models.Warning.belongsTo(models.Tester, {
       onDelete: "CASCADE",
       targetKey: 'id'
-    }) */
+    })
   }
 
   return Warning
