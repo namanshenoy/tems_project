@@ -20,7 +20,7 @@ type Mutation {
 # Tester Meta
   createTester(name: String!, igxlVersion: String): Tester!
   updateTester(name: String!, status:String, igxlVersion: String): Boolean!
-  setStatus(status: String!, name: String!): Boolean!
+  setTesterStatus(status: String!, name: String!): Boolean!
 
 # Tester Slots
   addTesterSlot(slotId: Int!, testerName: String!): Boolean!

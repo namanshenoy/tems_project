@@ -55,17 +55,25 @@ app.post('/TEST_CELL/:testerName/INITIALIZATION', (req, res) => {
 app.post('/TEST_CELL/:testerName/STATUS', (req, res) => {
   console.log(req.originalUrl);
   res.sendStatus(200)
-  helpers.graphqlQuery(host, PORT, graphqlEndpoint, `
-    {
-      getTesterById(id:1) {
-        id
-        name
+  helpers.graphqlQuery(host, PORT, graphqlEndpoint, 
+    `mutation {
+      updateStatus:setTesterStatus(name:"${req.params.testerName}", status:"${req.body.STATUS}")
+    }`
+  )
+    .then(response =>{
+      const updated = response.data.data.updateStatus
+      // console.log("Was " + req.params.testerName + " updated? " + updated)
+      if (!updated){
+        helpers.graphqlQuery(host, PORT, graphqlEndpoint, 
+          `mutation {
+            created:createTester(name:"${req.params.testerName}"){id}
+          }`
+        )
+          .then(t => console.log("Created new tester: ", req.params.testerName))
+          .catch(err => console.log("Error createing tester in status!\n", err))
       }
-    }
-  `)
-    .then(response => console.log(response.data))
-    .catch(err => console.log("Error found!", error))
-  console.log(req.body.STATUS)
+    })
+    .catch(err => console.log("Error in Status API!\n", err))
 })
 
 

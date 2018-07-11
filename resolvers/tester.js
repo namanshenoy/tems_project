@@ -60,10 +60,21 @@ export default {
       }
     },
 
-    setStatus: (parent, {status, name}, {models}) => models.Tester.update(
-      {status},
-      {where: {name}}
-    ),
+    setTesterStatus: async (parent, {status, name}, {models}) =>{
+      try {
+        var t = await models.Tester.update(
+          {status},
+          {where: {name},
+         },
+        )
+        return t[0] == 1
+      }
+      catch(err){
+        console.log("Could not set tester status!")
+        console.log(err)
+        return false
+      }
+    },
 
     // Tester Slot Mutations
     addTesterSlot: async (parent, {slotId, testerName}, {models}) => {

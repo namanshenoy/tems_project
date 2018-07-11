@@ -2,6 +2,7 @@ import Sequelize from 'sequelize'
 
 var sequelize = new Sequelize('tems', 'postgres', 'postgres', {
   dialect: 'postgres',
+  logging: false,
   define: {
     underscored: true
   }

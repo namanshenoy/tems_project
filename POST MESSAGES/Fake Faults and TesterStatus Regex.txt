@@ -1,0 +1,13 @@
+(SMCPlusLON): [Wed Jun 13 15:41:22 2018 002] Fault:002,Slot/Indx:024/034,Val:303
+8s
+(SMCPlusLON): [Wed Jun 13 15:41:22 2018 002] Fault:002,Slot/Indx:024/034,Val:303
+8s
+(SMCPlusLON): [Wed Jun 13 15:41:22 2018 002] Fault:002,Slot/Indx:024/034,Val:303
+8s
+(SMCPlusLON): [Wed Jun 13 15:41:22 2018 002] Fault:002,Slot/Indx:024/034,Val:303
+8s
+(SMCPlusLON): [Wed Jun 13 15:41:22 2018 002] Fault:002,Slot/Indx:024/034,Val:303
+8s
+
+((\d{2})\/(\d{2})\/(\d{2}),(\d{2}):(\d{2}):(\d{2})) = DateTime from TesterStatus
+(?<=(\d{2})\/(\d{2})\/(\d{2}),(\d{2}):(\d{2}):(\d{2})  )(.*)(?=((\d{2})\/(\d{2})\/(\d{2}),(\d{2}):(\d{2}):(\d{2}))|(\n)|$) = Shit between 2 datetimes
