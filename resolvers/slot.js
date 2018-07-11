@@ -4,10 +4,10 @@ export default {
     //getAllSlots(tester: Tester!): [Slot!]!
     getSlot: async (parent, {slotNumber, testerId}, {models}) => {
       try{
-        return models.findOne({
+        return models.Slot.findOne({
           where: {
-            testerId, 
-            slotNumber
+            "tester_id": testerId, 
+            "slot_number": slotNumber
           }
         })
       }
@@ -18,9 +18,16 @@ export default {
     }
   },
   Mutation: {
-    createSlot: async (parent, {slotNumber, testerId}, {models, tester}) => {
+    createSlot: async (parent, {slotNumber, testerId}, {models}) => {
      try {
       var newSlot = await models.Slot.create({slotNumber , testerId})
+      models.Tester.findOne({where: {id: testerId}}).then(t => {
+        t.addSlots(newSlot).then(t1 => {
+          console.log("Creted new slot! New Tester: ", t1.getSlots().then(ts =>{
+            console.log(ts)
+          }))
+        })
+      })
       return newSlot
      }
      catch (err) {

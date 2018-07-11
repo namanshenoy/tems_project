@@ -1,7 +1,7 @@
 export default (sequelize, DataTypes) => {
   const Slot = sequelize.define('slot', {
     slotNumber: {
-      type: DataTypes.STRING,
+      type: DataTypes.INTEGER,
       field: 'slot_number'
     }
   })

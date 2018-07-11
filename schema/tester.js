@@ -1,22 +1,30 @@
 export default `
 type Tester{
-  id: Int!,
-  slots: [Slot!]!,
-  igxlVersion: String,
+  id: Int!
   name: String!
+  Slots: [Slot]! @relation(name: "TesterOnSlot")
+  igxlVersion: String
+  #faults: [Faults]
+  Warnings: [Warning]
 }
 
 type Query {
-  getTesterById(id: Int!): Tester!
-  getTesterByName(name: String!): Tester!
-  getAllTesters: [Tester!]!
-  getSlotsForTester(testerName: String!): [Slot!]!
+# Tester Meta
+  getTesterById(id: Int!): Tester
+  getTesterByName(name: String!): Tester
+  getAllTesters: [Tester]
 }
 
 type Mutation {
+# Tester Meta
   createTester(name: String!, igxlVersion: String): Tester!
-  addSlot(slotId: Int!, testerName: String!): Boolean!
-  removeSlot(slotId: Int!, testerName: String!): Boolean!
-}
 
+# Tester Slots
+  addTesterSlot(slotId: Int!, testerName: String!): Boolean!
+  removeTesterSlot(slotId: Int!, testerName: String!): Boolean!
+
+# Tester Warnings
+  addTesterSingleWarning(name: String!, message: String!, date: String!): Boolean!
+  addTesterBatchWarnings(name: String!, warnings: [String!]!): Boolean!
+}
 `

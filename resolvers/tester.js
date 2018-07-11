@@ -1,25 +1,18 @@
 export default {
   Query: {
-    getTesterById: (parent, {id}, {models}) => models.Tester.findOne({where:{id}}),
+    // Tester Meta
+    getTesterById: (parent, {id}, {models}) =>   models.Tester.findById(id, {include: {all: true}}),
 
-    getTesterByName: (parent, {name}, {models}) => models.Tester.findOne({where: {name}}),
+    getTesterByName: (parent, {name}, {models}) => models.Tester.findOne({where: {name}, include: {all:true}}),
 
     getAllTesters: (parent, args, {models}) => models.Tester.findAll(),
-
-    getSlotsForTester:async (parent, {testerName}, {models}) => {
-      try {
-        var t = await models.Tester.findOne({where: {name: testerName}})
-        return t.getSlots()
-      } catch (err) {
-        console.log("Error at getSlotsForTester")
-        console.log(err)
-      }
-    }
   },
   Mutation: {
+    // Tester Meta
     createTester: (parent, args, {models}) => models.Tester.create(args) ,
 
-    addSlot: async (parent, {slotId, testerName}, {models}) => {
+    // Tester Slot Mutations
+    addTesterSlot: async (parent, {slotId, testerName}, {models}) => {
       try {
         var s = await models.Slot.findOne({where: {id: slotId}})
         var t = await models.Tester.findOne({where: {name: testerName}}).then(t=>{
@@ -27,17 +20,17 @@ export default {
         })
         return true
       }
-      catch(err){
+      catch(err) {
         console.log('Error adding slot')
         console.log(err)
         return false
       }
     },
 
-    removeSlot: async (parent, {slotId}, {models}) => {
+    removeTesterSlot: async (parent, {slotId, testerName}, {models}) => {
       try {
         var s = await models.Slot.findOne({where: {id: slotId}})
-        var t = await models.Tester.findOne({where: {testerName: testerName}}).then(t=>{
+        models.Tester.findOne({where: {testerName: testerName}}).then(t=>{
           t.removeSlots(s).then(s1 => console.log(`Successfully Removed Slot ${s1.slotNumber} from Tester ${testerName}`))
         })
         return true
@@ -47,6 +40,39 @@ export default {
         console.log(err)
         return false
       }
-    }
+    },
+
+    // Tester Slot Mutations
+    addTesterSingleWarning: async (parent, {name, message, date}, {models}) => {
+      try {
+        var t = await  models.Tester.findOne({where: {name}}).then(async t => {
+          var w = await models.Warning.create({message, date: new Date(date).toISOString()})
+          t.addWarnings(w)
+        })
+        return true
+      }
+      catch(err) {
+        console.log('Error adding slot')
+        console.log(err)
+        return false
+      }
+    },
+    addTesterBatchWarnings: async (parent, {name, warningsArr}, {models}) => {
+      try {
+        var t = await models.Tester.findOne({where: {name}}).then( t => {
+          warningsArr.forEach(async wStr => {
+            var wObj = JSON.parse(wStr)
+            var w = await models.Warning.create({message: wObj.message, date: new Date(wObj.date).toISOString()})
+            t.addWarnings(w)
+          })
+        })
+        return true
+      }
+      catch(err) {
+        console.log('Error adding slot')
+        console.log(err)
+        return false
+      }
+    },
   }
 }
