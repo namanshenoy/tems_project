@@ -9,6 +9,6 @@ type Query{
 }
 
 type Mutation{
-  createSlot(slotNumber: Int!): Slot!
+  createSlot(slotNumber: Int!, testerId: Int!): Slot!
 }
 `
