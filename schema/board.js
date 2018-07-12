@@ -1,6 +1,7 @@
 export default `
   type Board{
     id: Int!
+    slotNumber: Int
     boardId: String!
     name: String
     partNumber: String

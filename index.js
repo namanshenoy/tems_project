@@ -74,44 +74,52 @@ app.post('/TEST_CELL/:testerName/CONFIGURATION', (req, res) => {
   res.sendStatus(200)
   console.log('Tester: ', req.params.testerName)
 
-  helpers.graphqlQuery(host, PORT, graphqlEndpoint,
-    `mutation {
-      updateTester: updateTester(name:"${req.params.testerName}", igxlVersion:"${req.body.TESTER_CONTROLLER_SW.Version}", model:"${req.body.TESTER_MODEL}")
-    }`)
-    .then((response) => {
-      const updated = response.data.data.updateTester
-      console.log('Configuration Updated: ', updated)
-    })
-    .catch((err) => {
-      console.log('Error found in CONFIGURATION endpoint!\n', err.data.errors)
-    })
-
-  // Probably have to do this in sequelize...
   // foreach board, create a slot, add the board to the slot.
   // Gather the set of boards, then add it as a set to the tester with Tester.setSlots
-  models.Tester.findOne({ where: { name: req.params.testerName } }).then(async (t) => {
-    t.getSlots().then((oldSlots) => {
-      console.log(oldSlots)
-      oldSlots.forEach(oS => oS.destroy())
-    })
-    t.setSlots([])
-    req.body.BOARD.forEach(async (b) => {
-      // BOARD Object
-      // "BOARD_ID": "0000000",
-      // "NAME": "MWMeasureHD",
-      // "PART_NUMBER": "617-743-00",
-      // "REV": "0000-A",
-      // "SECTOR": null,
-      // "SLOT": "2"
-      const bMod = await models.Board.create({
-        boardId: b.BOARD_ID, name: b.NAME, partNumber: b.PART_NUMBER, rev: b.REV, sector: b.SECTOR,
+  const testerPromise = helpers.upsert(models.Tester, {
+    testerName: req.params.testerName,
+  })
+  Promise.resolve(testerPromise).then((testerObject) => {
+    testerObject.update({
+      igxlVersion: req.body.TESTER_CONTROLLER_SW.Version,
+      model: req.body.TESTER_MODEL,
+    }).then((updatedTesterObject) => {
+      req.body.BOARD.forEach(async (b) => {
+        const slotPromise = helpers.upsert(models.Slot, {
+          slotNumber: b.SLOT,
+        }, {
+          tester_id: updatedTesterObject.id, slotNumber: b.SLOT,
+        })
+        Promise.resolve(slotPromise).then((slotObject) => {
+          console.log('Inserting Slot: ', b.SLOT)
+          const boardPromise = helpers.upsert(models.Board, {
+            boardId: b.BOARD_ID,
+            name: b.NAME,
+            partNumber: b.PART_NUMBER,
+            rev: b.REV,
+            sector: b.SECTOR,
+            slotNumber: b.SLOT,
+          })
+          Promise.resolve(boardPromise).then((boardObject) => {
+            console.log('Inserting board for: ', boardObject.slotNumber)
+            slotObject.addBoards(boardObject).then(() => {
+              updatedTesterObject.addSlots(slotObject).then(() => console.log('Added Slot for', updatedTesterObject.id, 'as', slotObject.id))
+            })
+          })
+        })
+        // BOARD Object
+        // "BOARD_ID": "0000000",
+        // "NAME": "MWMeasureHD",
+        // "PART_NUMBER": "617-743-00",
+        // "REV": "0000-A",
+        // "SECTOR": null,
+        // "SLOT": "2"
       })
-      console.log('BMOD: ', bMod.id)
-      const s = await models.Slot.create({ slotNumber: b.SLOT })
-      await s.setBoards([bMod])
-      t.addSlots(s)
     })
   })
+  // models.Tester.findOne({
+  //   where: { name: req.params.testerName }
+  //    }).then(async (testerObject) => {
 })
 
 // TEMS STATUS message handler

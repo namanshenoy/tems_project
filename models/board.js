@@ -3,6 +3,7 @@ export default (sequelize, DataTypes) => {
     boardId: { type: DataTypes.STRING, field: 'board_id' },
     name: DataTypes.STRING,
     partNumber: { type: DataTypes.STRING, field: 'part_number' },
+    slotNumber: { type: DataTypes.INTEGER, field: 'slot_number' },
     rev: DataTypes.STRING,
     sector: DataTypes.STRING,
   })
