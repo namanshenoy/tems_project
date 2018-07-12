@@ -13,7 +13,7 @@ const schema = makeExecutableSchema({
   typeDefs,
   resolvers,
 })
-
+const dbRefresh = false
 const PORT = 8000
 const app = express()
 
@@ -25,11 +25,15 @@ const host = 'http://localhost'
 console.log(process.env.node_env)
 
 if (process.env.node_env === 'development') {
-  console.log('We are in development right now! Come again later for production!')
+  console.log('Development Mode: true')
 }
 
+console.log('Drop Database: ', dbRefresh)
+
 app.get('/', (req, res) => {
-  res.status(200).send('Hello there General Kenobi!')
+  res.status(200).send({
+    message: 'Hello there, General Kenobi!',
+  })
 })
 
 
@@ -45,15 +49,13 @@ app.use(graphqlEndpoint, bodyParser.json(), graphqlExpress({
 
 app.use('/graphiql', graphiqlExpress({ endpointURL: graphqlEndpoint }))
 
-// Non GraphQL Endpoints
-// http://localhost:8080/api/
+/*
+ * Non GraphQL Endpoints
+ */
 app.post('/TEST_CELL/:testerName/INITIALIZATION', (req, res) => {
   console.log(req.originalUrl)
   res.sendStatus(200)
-  console.log('Initialization')
   console.log('Tester: ', req.params.testerName)
-  console.log('body', req.body)
-  //  updateTester(name: String!, status:String, igxlVersion: String, model: String): Boolean!
 })
 
 app.post('/TEST_CELL/:testerName/CONFIGURATION', (req, res) => {
@@ -69,23 +71,24 @@ app.post('/TEST_CELL/:testerName/CONFIGURATION', (req, res) => {
       const updated = response.data.data.updateTester
       console.log('Configuration Updated: ', updated)
     })
-    .catch((error) => {
-      console.log('Error found in CONFIGURATION endpoint!\n', error)
+    .catch((err) => {
+      console.log('Error found in CONFIGURATION endpoint!\n', err.data.errors)
     })
 })
 
 app.post('/TEST_CELL/:testerName/STATUS', (req, res) => {
   console.log(req.originalUrl)
   res.sendStatus(200)
+
   helpers.graphqlQuery(host, PORT, graphqlEndpoint,
     `mutation {
       updateStatus:setTesterStatus(name:"${req.params.testerName}", status:"${req.body.STATUS}")
     }`)
     .then((response) => {
       const updated = response.data.data.updateStatus
-      // console.log("Was " + req.params.testerName + " updated? " + updated)
+
       if (!updated) {
-        // helpers.createTester(host, PORT, graphqlEndpoint, req.params.testerName)
+        console.log('Updated ', req.params.testerName, ',', updated)
         helpers.createTesterKWargs(host, PORT, graphqlEndpoint, {
           name: req.params.testerName, status: req.body.STATUS,
         })
@@ -95,7 +98,7 @@ app.post('/TEST_CELL/:testerName/STATUS', (req, res) => {
 })
 
 
-models.sequelize.sync({ force: false }).then(() => {
+models.sequelize.sync({ force: dbRefresh }).then(() => {
   app.listen(PORT, '0.0.0.0')
   console.log(`App is listening at port ${PORT}`)
 })

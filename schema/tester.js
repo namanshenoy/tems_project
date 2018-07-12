@@ -19,7 +19,7 @@ type Query {
 
 type Mutation {
 # Tester Meta
-  createTester(name: String!, igxlVersion: String, model: String): Tester!
+  createTester(name: String!, igxlVersion: String, model: String, status: String): Tester!
   updateTester(name: String!, status:String, igxlVersion: String, model: String): Boolean!
   setTesterStatus(status: String!, name: String!): Boolean!
 
