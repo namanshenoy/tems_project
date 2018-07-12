@@ -4,7 +4,6 @@
 [![forthebadge](https://forthebadge.com/images/badges/fuck-it-ship-it.svg)](https://forthebadge.com)
 [![forthebadge](https://forthebadge.com/images/badges/gluten-free.svg)](https://forthebadge.com)
 [![forthebadge](https://forthebadge.com/images/badges/made-with-javascript.svg)](https://forthebadge.com)
-[![forthebadge](https://forthebadge.com/images/badges/you-didnt-ask-for-this.svg)](https://forthebadge.com)
 [![forthebadge](https://forthebadge.com/images/badges/made-with-vue.svg)](https://forthebadge.com)
 [![forthebadge](https://forthebadge.com/images/badges/made-with-python.svg)](https://forthebadge.com)
 [![forthebadge](https://forthebadge.com/images/badges/made-with-c-sharp.svg)](https://forthebadge.com)
@@ -13,13 +12,14 @@
 
 ### Components
 -  Routing and Server: [Express](https://expressjs.com/)
--  Frontend Framework: [Vue](https://vuejs.org/)
+-  Frontend Framework: [Vue](https://vuejs.org/) (Not yet implemented)
 -  Object Relational Mapping: [Sequelize](https://github.com/sequelize/sequelize)
 -  API Queries: [GraphQL](https://graphql.org/)
 -  Database: [PostgreSQL](https://www.postgresql.org/)
 
 ### Installation.
 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Requires Nodejs, npm to be installed.
 ```
 npm install
 npm run start
@@ -73,7 +73,7 @@ npm run start
           "slotNumber": 1,
           "Boards": [
             {
-              "boardId": "Trollolllolol"
+              "boardId": "0000-0000-0000"
             }
           ],
           "Monitors": [
@@ -85,7 +85,7 @@ npm run start
       ],
       "Warnings": [
         {
-          "message": "Hello!"
+          "message": "Error!"
         }
       ],
       "Faults": [
