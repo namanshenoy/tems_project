@@ -1,0 +1,239 @@
+{
+  "TIME_STAMP": "2018-07-09T20:38:30.1089063Z",
+  "TESTER_CONTROLLER_BOOT_TIME": "2018-06-25T10:44:28.4182000",
+  "TESTER_CONTROLLER_SW": {
+    "SoftwareName": "IG-XL",
+    "Version": "9.10.00_uflx",
+    "Patch": "",
+    "Delta": "",
+    "Path": "C:\\Program Files (x86)\\Teradyne\\IG-XL\\9.10.00_uflx"
+  },
+  "TESTER_MODEL": "ULTRAFLEX",
+  "BOARD": [
+    {
+      "BOARD_ID": "0000000",
+      "NAME": "MWMeasureHD",
+      "PART_NUMBER": "617-743-00",
+      "REV": "0000-A",
+      "SECTOR": null,
+      "SLOT": "2"
+    },
+    {
+      "BOARD_ID": "0000000",
+      "NAME": "UltraPAC",
+      "PART_NUMBER": "605-743-00",
+      "REV": "0000-A",
+      "SECTOR": null,
+      "SLOT": "4"
+    },
+    {
+      "BOARD_ID": "0000000",
+      "NAME": "HSD-U",
+      "PART_NUMBER": "604-356-01",
+      "REV": "0000-A",
+      "SECTOR": null,
+      "SLOT": "9"
+    },
+    {
+      "BOARD_ID": "0000000",
+      "NAME": "MWSynthHD",
+      "PART_NUMBER": "617-744-00",
+      "REV": "0000-A",
+      "SECTOR": null,
+      "SLOT": "10"
+    },
+    {
+      "BOARD_ID": "0000000",
+      "NAME": "HSS-10G",
+      "PART_NUMBER": "974-245-20",
+      "REV": "0000-A",
+      "SECTOR": null,
+      "SLOT": "11"
+    },
+    {
+      "BOARD_ID": "0000000",
+      "NAME": "HexVS",
+      "PART_NUMBER": "974-294-00",
+      "REV": "0000-A",
+      "SECTOR": null,
+      "SLOT": "14"
+    },
+    {
+      "BOARD_ID": "0000000",
+      "NAME": "DC-30",
+      "PART_NUMBER": "805-002-00",
+      "REV": "0000-A",
+      "SECTOR": null,
+      "SLOT": "16"
+    },
+    {
+      "BOARD_ID": "0000000",
+      "NAME": "VSM",
+      "PART_NUMBER": "974-296-00",
+      "REV": "0000-A",
+      "SECTOR": null,
+      "SLOT": "21"
+    },
+    {
+      "BOARD_ID": "0000000",
+      "NAME": "SupportBoard",
+      "PART_NUMBER": "974-220-12",
+      "REV": "0000-A",
+      "SECTOR": null,
+      "SLOT": "24"
+    },
+    {
+      "BOARD_ID": "0000000",
+      "NAME": "SupportBoard",
+      "PART_NUMBER": "979-220-01",
+      "REV": "0000-A",
+      "SECTOR": null,
+      "SLOT": "25"
+    },
+    {
+      "BOARD_ID": "0000000",
+      "NAME": "DistributionBoard",
+      "PART_NUMBER": "956-355-00",
+      "REV": "0000-A",
+      "SECTOR": null,
+      "SLOT": "62"
+    },
+    {
+      "BOARD_ID": "0000000",
+      "NAME": "DistributionBoard",
+      "PART_NUMBER": "956-355-00",
+      "REV": "0000-A",
+      "SECTOR": null,
+      "SLOT": "63"
+    }
+  ],
+  "LICENSE_INFO": [
+    {
+      "Product": "TER-SIM-03",
+      "Description": null,
+      "Version": null,
+      "LicenseModel": 0,
+      "Temporary": 0,
+      "Enabled": 0,
+      "Expiration": "\/Date(1558497600000-0400)\/",
+      "Expired": 1,
+      "CountAvailable": 1,
+      "OrderId": "EngOffline",
+      "DeployedTo": "npvw7-t64-031",
+      "FeatureLst": [
+        {
+          "feature": "IG-XL_DataTool_Jaguar",
+          "version": "99.99000"
+        },
+        {
+          "feature": "IG-XL_DataTool_IntegraFLEX",
+          "version": "99.99000"
+        },
+        {
+          "feature": "IG-XL_DataTool_J750",
+          "version": "99.99000"
+        },
+        {
+          "feature": "IG-XL_DataTool",
+          "version": "99.99000"
+        },
+        {
+          "feature": "IGXLConcurrentExecution",
+          "version": "99.99000"
+        },
+        {
+          "feature": "CTExpert",
+          "version": "99.99000"
+        },
+        {
+          "feature": "TimeLines",
+          "version": "99.99000"
+        },
+        {
+          "feature": "IG-XL_Bitmap",
+          "version": "99.99000"
+        },
+        {
+          "feature": "IG-XL_PBM",
+          "version": "99.99000"
+        },
+        {
+          "feature": "IG-XL_RA",
+          "version": "99.99000"
+        },
+        {
+          "feature": "IG-XL_RAPlus",
+          "version": "99.99000"
+        },
+        {
+          "feature": "IG-XL_SECSGEM",
+          "version": "99.99000"
+        },
+        {
+          "feature": "IG-XL_TesterServiceDaemon",
+          "version": "99.99000"
+        },
+        {
+          "feature": "IG-XL_RedAnalysis",
+          "version": "99.99000"
+        },
+        {
+          "feature": "IG-XL_ExChange",
+          "version": "99.99000"
+        },
+        {
+          "feature": "VX_HSD_Flex",
+          "version": "99.99000"
+        },
+        {
+          "feature": "BitmapTool.Integrated1",
+          "version": "99.99000"
+        },
+        {
+          "feature": "WaferMap.Integrated1",
+          "version": "99.99000"
+        },
+        {
+          "feature": "BitmapTool.Standalone1",
+          "version": "99.99000"
+        },
+        {
+          "feature": "WaferMap.Standalone1",
+          "version": "99.99000"
+        },
+        {
+          "feature": "IG-XL_BitmapView",
+          "version": "99.99000"
+        },
+        {
+          "feature": "IG-XL_WaferView",
+          "version": "99.99000"
+        },
+        {
+          "feature": "IG-XL_EEPROM_ACCESS",
+          "version": "99.99000"
+        },
+        {
+          "feature": "GSO_TSA_TST",
+          "version": "99.99000"
+        },
+        {
+          "feature": "ATETools-Pro",
+          "version": "99.99000"
+        },
+        {
+          "feature": "Turbo",
+          "version": "99.99000"
+        },
+        {
+          "feature": "IGNet",
+          "version": "99.99000"
+        }
+      ]
+    }
+  ],
+  "TESTER_HW": null,
+  "TESTER_LICENSES": null,
+  "EXTERNAL_PERIPHERALS": "",
+  "INTERFACING_HW": ""
+}

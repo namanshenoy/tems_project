@@ -15,6 +15,16 @@ const helpers = {
       .then(() => console.log('Created new tester: ', testerName))
       .catch(err => console.log('Error creating tester in helpers!\n', err))
   },
+  createTesterKWargs: (host, PORT, graphqlEndpoint, args) => {
+    axios.post(`${host}:${PORT}${graphqlEndpoint}`, {
+      query:
+          `mutation {
+            created:createTester${JSON.stringify(args)}){id}
+          }`,
+    })
+      .then(() => console.log('Created new tester: ', args))
+      .catch(err => console.log('Error creating tester in helpers!\n', err))
+  },
 }
 
 export default helpers

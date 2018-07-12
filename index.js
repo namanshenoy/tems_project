@@ -22,6 +22,11 @@ const host = 'http://localhost'
 
 // Graph QL Endpoints
 // bodyParser is needed just for POST.
+console.log(process.env.node_env)
+
+if (process.env.node_env === 'development') {
+  console.log('We are in development right now! Come again later for production!')
+}
 
 app.get('/', (req, res) => {
   res.status(200).send('Hello there General Kenobi!')
@@ -35,9 +40,6 @@ app.use(graphqlEndpoint, bodyParser.json(), graphqlExpress({
   schema,
   context: {
     models,
-    tester: {
-      id: 1,
-    },
   },
 }))
 
@@ -48,8 +50,9 @@ app.use('/graphiql', graphiqlExpress({ endpointURL: graphqlEndpoint }))
 app.post('/TEST_CELL/:testerName/INITIALIZATION', (req, res) => {
   console.log(req.originalUrl)
   res.sendStatus(200)
+  console.log('Initialization')
   console.log('Tester: ', req.params.testerName)
-  console.log(res.body)
+  console.log('body', req.body)
   //  updateTester(name: String!, status:String, igxlVersion: String, model: String): Boolean!
 })
 
@@ -82,14 +85,17 @@ app.post('/TEST_CELL/:testerName/STATUS', (req, res) => {
       const updated = response.data.data.updateStatus
       // console.log("Was " + req.params.testerName + " updated? " + updated)
       if (!updated) {
-        helpers.createTester(host, PORT, graphqlEndpoint, req.params.testerName)
+        // helpers.createTester(host, PORT, graphqlEndpoint, req.params.testerName)
+        helpers.createTesterKWargs(host, PORT, graphqlEndpoint, {
+          name: req.params.testerName, status: req.body.STATUS,
+        })
       }
     })
     .catch(err => console.log('Error in Status API!\n', err))
 })
 
 
-models.sequelize.sync({ force: true }).then(() => {
+models.sequelize.sync({ force: false }).then(() => {
   app.listen(PORT, '0.0.0.0')
   console.log(`App is listening at port ${PORT}`)
 })

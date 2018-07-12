@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon --exec babel-node index.js"
+    "start": "nodemon --exec babel-node index.js",
+    "tems": "babel-node simulation/index.js"
   },
   "keywords": [],
   "author": "",
@@ -14,6 +15,7 @@
     "babel-cli": "^6.26.0",
     "babel-preset-env": "^1.7.0",
     "babel-preset-stage-3": "^6.24.1",
+    "commander": "^2.16.0",
     "eslint": "^4.19.1",
     "eslint-cli": "^1.1.1",
     "eslint-config-airbnb-base": "^13.0.0",
