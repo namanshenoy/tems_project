@@ -11,7 +11,7 @@
   "TESTER_MODEL": "ULTRAFLEX",
   "BOARD": [
     {
-      "BOARD_ID": "0000000",
+      "BOARD_ID": "0000001",
       "NAME": "MWMeasureHD",
       "PART_NUMBER": "617-743-00",
       "REV": "0000-A",
@@ -19,7 +19,7 @@
       "SLOT": "2"
     },
     {
-      "BOARD_ID": "0000000",
+      "BOARD_ID": "0000001",
       "NAME": "UltraPAC",
       "PART_NUMBER": "605-743-00",
       "REV": "0000-A",
@@ -27,7 +27,7 @@
       "SLOT": "4"
     },
     {
-      "BOARD_ID": "0000000",
+      "BOARD_ID": "0000001",
       "NAME": "HSD-U",
       "PART_NUMBER": "604-356-01",
       "REV": "0000-A",
@@ -35,7 +35,7 @@
       "SLOT": "9"
     },
     {
-      "BOARD_ID": "0000000",
+      "BOARD_ID": "0000001",
       "NAME": "MWSynthHD",
       "PART_NUMBER": "617-744-00",
       "REV": "0000-A",
@@ -43,7 +43,7 @@
       "SLOT": "10"
     },
     {
-      "BOARD_ID": "0000000",
+      "BOARD_ID": "0000001",
       "NAME": "HSS-10G",
       "PART_NUMBER": "974-245-20",
       "REV": "0000-A",
@@ -51,7 +51,7 @@
       "SLOT": "11"
     },
     {
-      "BOARD_ID": "0000000",
+      "BOARD_ID": "0000001",
       "NAME": "HexVS",
       "PART_NUMBER": "974-294-00",
       "REV": "0000-A",
@@ -59,7 +59,7 @@
       "SLOT": "14"
     },
     {
-      "BOARD_ID": "0000000",
+      "BOARD_ID": "0000001",
       "NAME": "DC-30",
       "PART_NUMBER": "805-002-00",
       "REV": "0000-A",
@@ -67,7 +67,7 @@
       "SLOT": "16"
     },
     {
-      "BOARD_ID": "0000000",
+      "BOARD_ID": "0000001",
       "NAME": "VSM",
       "PART_NUMBER": "974-296-00",
       "REV": "0000-A",
@@ -75,7 +75,7 @@
       "SLOT": "21"
     },
     {
-      "BOARD_ID": "0000000",
+      "BOARD_ID": "0000001",
       "NAME": "SupportBoard",
       "PART_NUMBER": "974-220-12",
       "REV": "0000-A",
@@ -83,7 +83,7 @@
       "SLOT": "24"
     },
     {
-      "BOARD_ID": "0000000",
+      "BOARD_ID": "0000001",
       "NAME": "SupportBoard",
       "PART_NUMBER": "979-220-01",
       "REV": "0000-A",
@@ -91,7 +91,7 @@
       "SLOT": "25"
     },
     {
-      "BOARD_ID": "0000000",
+      "BOARD_ID": "0000001",
       "NAME": "DistributionBoard",
       "PART_NUMBER": "956-355-00",
       "REV": "0000-A",
@@ -99,7 +99,7 @@
       "SLOT": "62"
     },
     {
-      "BOARD_ID": "0000000",
+      "BOARD_ID": "0000001",
       "NAME": "DistributionBoard",
       "PART_NUMBER": "956-355-00",
       "REV": "0000-A",
