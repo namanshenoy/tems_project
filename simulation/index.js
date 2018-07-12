@@ -7,6 +7,7 @@ import axios from 'axios'
 import * as configMessage from '../POST MESSAGES/CONFIGURATION_MESSAGE.json'
 import * as statusMessage from '../POST MESSAGES/STATUS_MESSAGE.json'
 import * as initializationMessage from '../POST MESSAGES/INITIALIZATION_MESSAGE.json'
+import * as smcMessage from '../POST MESSAGES/SMC_MESSAGE.json'
 
 commander
   .version('v0.1')
@@ -27,10 +28,13 @@ switch (commander.message) {
   case 'CONFIGURATION':
     data = configMessage
     break
+  case 'MAINTENANCE':
+    data = smcMessage
+    break
   default:
     console.log('\x1b[31m', 'ARGS ERR!', '\x1b[0m', 'Please enter arguments')
     console.log('\x1b[31m', 'ARGS ERR!', '\x1b[0m', 'Usage: npm run tems -- --port [port] --message [MESSAGE TYPE] --tester [Tester Name]')
-    console.log('\x1b[32m', 'INFO:', '\x1b[0m', 'Available messages: STATUS INITIALIZATION CONFIGURATION')
+    console.log('\x1b[32m', 'INFO:', '\x1b[0m', 'Available messages: STATUS INITIALIZATION CONFIGURATION MAINTENANCE')
     console.log()
     console.log('\x1b[32m', 'INFO:', '\x1b[0m', 'Defaulting to npm run tems -- --port 8000 --message STATUS --tester TEST_TESTER')
     console.log()

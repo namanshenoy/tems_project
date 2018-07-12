@@ -6,6 +6,7 @@ export default (sequelize, DataTypes) => {
     slotNumber: { type: DataTypes.INTEGER, field: 'slot_number' },
     rev: DataTypes.STRING,
     sector: DataTypes.STRING,
+    testerName: { type: DataTypes.STRING, field: 'tester_name' },
   })
 
   Board.associate = (models) => {

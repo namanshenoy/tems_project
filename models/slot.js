@@ -4,6 +4,26 @@ export default (sequelize, DataTypes) => {
       type: DataTypes.INTEGER,
       field: 'slot_number',
     },
+    neuronID: {
+      type: DataTypes.STRING,
+      field: 'neuron_id',
+    },
+    eepromData: {
+      type: DataTypes.STRING,
+      field: 'eeprom_data',
+    },
+    swRevDate: {
+      type: DataTypes.DECIMAL,
+      field: 'sw_rev_date',
+    },
+    limitRevDate: {
+      type: DataTypes.DECIMAL,
+      field: 'limit_rev_date',
+    },
+    limitFileName: {
+      type: DataTypes.STRING,
+      field: 'limit_file_name',
+    },
   })
 
   Slot.associate = (models) => {

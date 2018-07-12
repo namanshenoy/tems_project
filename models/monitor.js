@@ -4,6 +4,7 @@ export default (sequelize, DataTypes) => {
     value: DataTypes.INTEGER,
     unit: DataTypes.STRING,
     name: DataTypes.STRING,
+    asterix: DataTypes.BOOLEAN,
   })
 
   Monitor.associate = (models) => {

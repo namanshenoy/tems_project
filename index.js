@@ -4,6 +4,7 @@ import path from 'path'
 import { graphqlExpress, graphiqlExpress } from 'apollo-server-express'
 import { makeExecutableSchema } from 'graphql-tools'
 import { fileLoader, mergeResolvers, mergeTypes } from 'merge-graphql-schemas'
+import prettyjson from 'prettyjson'
 import models from './models'
 import helpers from './helpers'
 
@@ -13,7 +14,7 @@ const schema = makeExecutableSchema({
   typeDefs,
   resolvers,
 })
-const dbRefresh = false
+const dbRefresh = true
 const PORT = 8000
 const app = express()
 
@@ -68,6 +69,31 @@ app.post('/TEST_CELL/:testerName/INITIALIZATION', (req, res) => {
   console.log('Tester: ', req.params.testerName)
 })
 
+// TEMS Maintenance Handler
+app.post('/TEST_CELL/:testerName/MAINTENANCE', (req, res) => {
+  console.log(req.originalUrl)
+  res.sendStatus(200)
+
+  const smcData = JSON.parse(req.body.MAINT_DESCRIPTION_LIST)
+  console.log('Slot Type:')
+  console.log(prettyjson.render(smcData.nodes[0], { indent: 4 }))
+  console.log()
+  console.log('Monitor Type:')
+  console.log(prettyjson.render(smcData.monitorsCached[0], { indent: 4 }))
+
+  // get current tester object
+  models.Tester.findOne({ name: req.params.testerName })
+    .then((testerObject) => {
+      smcData.nodes.forEach((node) => {
+        node.tester = testerObject.id // eslint-disable-line no-param-reassign
+        helpers.upsert(models.Slot, node, {
+          tester_id: testerObject.id,
+          slotNumber: node.slotNumber,
+        })
+      })
+    })
+})
+
 // TEMS CONFIGURATION message handler
 app.post('/TEST_CELL/:testerName/CONFIGURATION', (req, res) => {
   console.log(req.originalUrl)
@@ -104,14 +130,12 @@ app.post('/TEST_CELL/:testerName/CONFIGURATION', (req, res) => {
               rev: configBoard.REV,
               sector: configBoard.SECTOR,
               slotNumber: configBoard.SLOT,
+              testerName: req.params.testerName,
             },
             {
-              boardId: configBoard.BOARD_ID,
-              name: configBoard.NAME,
-              partNumber: configBoard.PART_NUMBER,
-              rev: configBoard.REV,
-              sector: configBoard.SECTOR,
+              // boardId: configBoard.BOARD_ID,
               slotNumber: configBoard.SLOT,
+              testerName: req.params.testerName,
             })
             Promise.resolve(boardPromise)
               .then((boardObject) => {
