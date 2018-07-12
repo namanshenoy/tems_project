@@ -20,25 +20,33 @@ const app = express()
 const graphqlEndpoint = '/graphql'
 const host = 'http://localhost'
 
-// Graph QL Endpoints
-// bodyParser is needed just for POST.
-console.log(process.env.node_env)
 
+/*
+ * app setup
+ */
+
+// bodyParser is needed just for POST.
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({ extended: true }))
+
+
+/*
+ * Graph QL Endpoints
+ */
+
+// Check if in developer mode
 if (process.env.node_env === 'development') {
   console.log('Development Mode: true')
 }
 
 console.log('Drop Database: ', dbRefresh)
 
+// Server Root
 app.get('/', (req, res) => {
   res.status(200).send({
     message: 'Hello there, General Kenobi!',
   })
 })
-
-
-app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({ extended: true }))
 
 app.use(graphqlEndpoint, bodyParser.json(), graphqlExpress({
   schema,
@@ -52,12 +60,15 @@ app.use('/graphiql', graphiqlExpress({ endpointURL: graphqlEndpoint }))
 /*
  * Non GraphQL Endpoints
  */
+
+// TEMS INITIALIZATION message handler
 app.post('/TEST_CELL/:testerName/INITIALIZATION', (req, res) => {
   console.log(req.originalUrl)
   res.sendStatus(200)
   console.log('Tester: ', req.params.testerName)
 })
 
+// TEMS CONFIGURATION message handler
 app.post('/TEST_CELL/:testerName/CONFIGURATION', (req, res) => {
   console.log(req.originalUrl)
   res.sendStatus(200)
@@ -74,8 +85,31 @@ app.post('/TEST_CELL/:testerName/CONFIGURATION', (req, res) => {
     .catch((err) => {
       console.log('Error found in CONFIGURATION endpoint!\n', err.data.errors)
     })
+
+  // Probably have to do this in sequelize...
+  // foreach board, create a slot, add the board to the slot.
+  // Gather the set of boards, then add it as a set to the tester with Tester.setSlots
+  models.Tester.findOne({ where: { name: req.params.testerName } }).then(async (t) => {
+    req.body.BOARD.forEach(async (b) => {
+      // BOARD Object
+      // "BOARD_ID": "0000000",
+      // "NAME": "MWMeasureHD",
+      // "PART_NUMBER": "617-743-00",
+      // "REV": "0000-A",
+      // "SECTOR": null,
+      // "SLOT": "2"
+      const bMod = await models.Board.create({
+        boardId: b.BOARD_ID, name: b.NAME, partNumber: b.PART_NUMBER, rev: b.REV, sector: b.SECTOR,
+      })
+      console.log('BMOD: ', bMod.id)
+      const s = await models.Slot.create({ slotNumber: b.SLOT })
+      await s.setBoards([bMod])
+      t.addSlots(s)
+    })
+  })
 })
 
+// TEMS STATUS message handler
 app.post('/TEST_CELL/:testerName/STATUS', (req, res) => {
   console.log(req.originalUrl)
   res.sendStatus(200)
@@ -97,8 +131,9 @@ app.post('/TEST_CELL/:testerName/STATUS', (req, res) => {
     .catch(err => console.log('Error in Status API!\n', err))
 })
 
-
+// if force is true, the database will be empty upon server start
 models.sequelize.sync({ force: dbRefresh }).then(() => {
+  // Start server
   app.listen(PORT, '0.0.0.0')
   console.log(`App is listening at port ${PORT}`)
 })

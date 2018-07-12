@@ -29,6 +29,16 @@ const helpers = {
       .then(() => console.log('Created new tester: ', args))
       .catch(err => console.log('Error creating tester in helpers!\n', err.response.data))
   },
+  upsert: (model, values, condition) => model
+    .findOne({ where: condition })
+    .then((obj) => {
+      if (obj) {
+        // update
+        return obj.update(values)
+      }
+      // insert
+      return model.create(values)
+    }),
 }
 
 export default helpers
