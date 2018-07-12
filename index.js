@@ -77,49 +77,58 @@ app.post('/TEST_CELL/:testerName/CONFIGURATION', (req, res) => {
   // foreach board, create a slot, add the board to the slot.
   // Gather the set of boards, then add it as a set to the tester with Tester.setSlots
   const testerPromise = helpers.upsert(models.Tester, {
-    testerName: req.params.testerName,
+    name: req.params.testerName,
+  },
+  {
+    name: req.params.testerName,
   })
   Promise.resolve(testerPromise).then((testerObject) => {
     testerObject.update({
+      name: req.params.testerName,
       igxlVersion: req.body.TESTER_CONTROLLER_SW.Version,
       model: req.body.TESTER_MODEL,
     }).then((updatedTesterObject) => {
-      req.body.BOARD.forEach(async (b) => {
+      req.body.BOARD.forEach(async (configBoard) => {
         const slotPromise = helpers.upsert(models.Slot, {
-          slotNumber: b.SLOT,
+          slotNumber: configBoard.SLOT,
         }, {
-          tester_id: updatedTesterObject.id, slotNumber: b.SLOT,
+          tester_id: updatedTesterObject.id, slotNumber: configBoard.SLOT,
         })
-        Promise.resolve(slotPromise).then((slotObject) => {
-          console.log('Inserting Slot: ', b.SLOT)
-          const boardPromise = helpers.upsert(models.Board, {
-            boardId: b.BOARD_ID,
-            name: b.NAME,
-            partNumber: b.PART_NUMBER,
-            rev: b.REV,
-            sector: b.SECTOR,
-            slotNumber: b.SLOT,
-          })
-          Promise.resolve(boardPromise).then((boardObject) => {
-            console.log('Inserting board for: ', boardObject.slotNumber)
-            slotObject.addBoards(boardObject).then(() => {
-              updatedTesterObject.addSlots(slotObject).then(() => console.log('Added Slot for', updatedTesterObject.id, 'as', slotObject.id))
+        Promise.resolve(slotPromise)
+          .then((slotObject) => {
+            // console.log('Inserting Slot: ', configBoard.SLOT)
+            const boardPromise = helpers.upsert(models.Board, {
+              boardId: configBoard.BOARD_ID,
+              name: configBoard.NAME,
+              partNumber: configBoard.PART_NUMBER,
+              rev: configBoard.REV,
+              sector: configBoard.SECTOR,
+              slotNumber: configBoard.SLOT,
+            },
+            {
+              boardId: configBoard.BOARD_ID,
+              name: configBoard.NAME,
+              partNumber: configBoard.PART_NUMBER,
+              rev: configBoard.REV,
+              sector: configBoard.SECTOR,
+              slotNumber: configBoard.SLOT,
             })
+            Promise.resolve(boardPromise)
+              .then((boardObject) => {
+                // console.log('Inserting board for: ', slotObject.slotNumber, 'as',
+                // boardObject.slotNumber)
+                slotObject.addBoards(boardObject).then(() => {
+                  updatedTesterObject.addSlots(slotObject)
+                  // .then(() => console.log('Added Slot for Tester:',
+                  // updatedTesterObject.name, 'as', slotObject.id))
+                })
+              })
+              .catch(error => console.log('Error inserting board in slot', slotObject.slotNumber, 'as slot id:', slotObject.id, '\n', error))
           })
-        })
-        // BOARD Object
-        // "BOARD_ID": "0000000",
-        // "NAME": "MWMeasureHD",
-        // "PART_NUMBER": "617-743-00",
-        // "REV": "0000-A",
-        // "SECTOR": null,
-        // "SLOT": "2"
+          .catch(error => console.log('Error inserting board in tester', testerObject.name, 'as slot:', configBoard.SLOT, '\n', error))
       })
     })
   })
-  // models.Tester.findOne({
-  //   where: { name: req.params.testerName }
-  //    }).then(async (testerObject) => {
 })
 
 // TEMS STATUS message handler

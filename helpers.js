@@ -34,9 +34,11 @@ const helpers = {
     .then((obj) => {
       if (obj) {
         // update
+        // console.log('Update!')
         return obj.update(values)
       }
       // insert
+      // console.log('Create!')
       return model.create(values)
     }),
 }
