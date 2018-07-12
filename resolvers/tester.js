@@ -44,7 +44,26 @@ export default {
       ],
     }),
 
-    getAllTesters: (parent, args, { models }) => models.Tester.findAll(),
+    getAllTesters: (parent, args, { models }) => models.Tester.findAll({
+      include: [
+        {
+          model: models.Slot,
+          as: 'Slots',
+          include: [
+            { model: models.Board, as: 'Boards' },
+            { model: models.Monitor, as: 'Monitors' },
+          ],
+        },
+        {
+          model: models.Warning,
+          as: 'Warnings',
+        },
+        {
+          model: models.Fault,
+          as: 'Faults',
+        },
+      ],
+    }),
   },
   Mutation: {
     // Tester Meta

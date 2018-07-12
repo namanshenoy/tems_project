@@ -14,7 +14,7 @@ const schema = makeExecutableSchema({
   typeDefs,
   resolvers,
 })
-const dbRefresh = true
+const dbRefresh = false
 const PORT = 8000
 const app = express()
 
@@ -91,6 +91,11 @@ app.post('/TEST_CELL/:testerName/MAINTENANCE', (req, res) => {
           slotNumber: node.slotNumber,
         })
       })
+      // smcData.monitorsCached.forEach((monitor) => {
+      //   helpers.upsert(models.Monitor, {
+      //     slotNumber:
+      //   })
+      // })
     })
 })
 

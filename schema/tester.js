@@ -2,7 +2,7 @@ export default `
 type Tester{
   id: Int!
   name: String!
-  Slots: [Slot]!
+  Slots: [Slot]
   igxlVersion: String
   Faults: [Fault]
   Warnings: [Warning]
