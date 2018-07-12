@@ -90,6 +90,11 @@ app.post('/TEST_CELL/:testerName/CONFIGURATION', (req, res) => {
   // foreach board, create a slot, add the board to the slot.
   // Gather the set of boards, then add it as a set to the tester with Tester.setSlots
   models.Tester.findOne({ where: { name: req.params.testerName } }).then(async (t) => {
+    t.getSlots().then((oldSlots) => {
+      console.log(oldSlots)
+      oldSlots.forEach(oS => oS.destroy())
+    })
+    t.setSlots([])
     req.body.BOARD.forEach(async (b) => {
       // BOARD Object
       // "BOARD_ID": "0000000",
