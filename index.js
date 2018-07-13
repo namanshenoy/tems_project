@@ -82,20 +82,64 @@ app.post('/TEST_CELL/:testerName/MAINTENANCE', (req, res) => {
   console.log(prettyjson.render(smcData.monitorsCached[0], { indent: 4 }))
 
   // get current tester object
+  const nodePromises = []
   models.Tester.findOne({ name: req.params.testerName })
     .then((testerObject) => {
+      /*
+       * Create a map of Slot update
+       */
       smcData.nodes.forEach((node) => {
         node.tester_id = testerObject.id // eslint-disable-line no-param-reassign
-        helpers.upsert(models.Slot, node, {
-          tester_id: testerObject.id,
-          slotNumber: node.slotNumber,
+        nodePromises.push(
+          helpers.upsert(models.Slot, node, {
+            tester_id: testerObject.id,
+            slotNumber: node.slotNumber,
+          }),
+        )
+      })
+
+      /*
+       * Drop old faults from tester
+       */
+      models.Fault.destroy({ where: { tester_id: testerObject.id } })
+
+      /*
+       * Create List of promises for slot creation
+       */
+      Promise.all(nodePromises).then((allSlots) => {
+        console.log('Recieved all slots')
+        const nodeListObject = {}
+        allSlots.forEach((slot) => {
+          Promise.resolve(models.Monitor.destroy({ where: { slot_id: slot.id } }))
+          nodeListObject[slot.slotNumber] = slot
+        })
+        smcData.monitorsCached.forEach((monitor) => {
+          console.log(prettyjson.render(monitor, { indent: 4 }))
+          const faultArr = JSON.parse(monitor.faults)
+          faultArr.forEach((fault) => {
+            models.Fault.create({
+              faultNum: fault.fault_num,
+              faultVal: fault.fault_val,
+              indexNum: fault.index_num,
+              slotNum: fault.slot_num,
+              faultDate: new Date(fault.fault_date),
+            }).then(createdFault => testerObject.addFaults(createdFault))
+          })
+          /*
+           * Create monitor and add to Slot
+           */
+          models.Monitor.create({
+            index: monitor.index,
+            value: monitor.value,
+            unit: monitor.unit,
+            name: monitor.name,
+            asterix: monitor.asterix,
+          })
+            .then((createdMonitor) => {
+              Promise.resolve(nodeListObject[monitor.node].addMonitors(createdMonitor))
+            })
         })
       })
-      // smcData.monitorsCached.forEach((monitor) => {
-      //   helpers.upsert(models.Monitor, {
-      //     slotNumber:
-      //   })
-      // })
     })
 })
 

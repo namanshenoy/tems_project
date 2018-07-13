@@ -1,15 +1,26 @@
 export default (sequelize, DataTypes) => {
   const Fault = sequelize.define('fault', {
-    faultNumber: {
+    faultNum: {
       type: DataTypes.INTEGER,
       field: 'fault_number',
     },
-    value: DataTypes.INTEGER,
-    monitor: DataTypes.INTEGER,
-    date: {
+    faultVal: {
+      type: DataTypes.INTEGER,
+      field: 'fault_val',
+    },
+    indexNum: {
+      type: DataTypes.INTEGER,
+      field: 'index_num',
+    },
+    slotNum: {
+      type: DataTypes.INTEGER,
+      field: 'slot_num',
+    },
+    faultDate: {
       type: DataTypes.DATE,
+      field: 'fault_date',
       get() {
-        const d = this.getDataValue('date')
+        const d = this.getDataValue(this.faultDate)
         console.log('DATE: ', d)
         if (d == null) {
           return 'Setting Date. Please Try again'
