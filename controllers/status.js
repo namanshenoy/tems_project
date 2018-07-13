@@ -1,20 +1,25 @@
 import helpers from '../helpers'
-import config from '../config'
 
+/**
+ * Controls messages recieved at the STATUS endpoint
+ * @param {Request} req - Request from client
+ * @param {Response} res - Request to client
+ */
 const statusController = (req, res) => {
   console.log(req.originalUrl)
   res.sendStatus(200)
 
-  helpers.graphqlQuery(config.graphqlHost, config.PORT, config.graphqlEndpoint,
+  helpers.graphqlQuery(
     `mutation {
       updateStatus:setTesterStatus(name:"${req.params.testerName}", status:"${req.body.STATUS}")
-    }`)
+    }`,
+  )
     .then((response) => {
       const updated = response.data.data.updateStatus
 
       if (!updated) {
         console.log('Updated ', req.params.testerName, ',', updated)
-        helpers.createTesterKWargs(config.graphqlHost, config.PORT, config.graphqlEndpoint, {
+        helpers.createTesterKWargs({
           name: req.params.testerName, status: req.body.STATUS,
         })
       }

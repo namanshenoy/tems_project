@@ -6,15 +6,21 @@ const maintenanceController = (req, res) => {
   res.sendStatus(200)
 
   const smcData = JSON.parse(req.body.MAINT_DESCRIPTION_LIST)
-  /*
-     * Get current Tester Object
-     */
+
+  /**
+   * List of Promises that need to be completed in order to
+   * update the lot relations
+   */
   const nodePromises = []
+
+  /**
+   * Get current Tester Object
+   */
   models.Tester.findOne({ name: req.params.testerName })
     .then((testerObject) => {
-      /*
-         * Create a map of Slot update
-         */
+      /**
+       * Create a map of Slot update
+       */
       smcData.nodes.forEach((node) => {
         node.tester_id = testerObject.id // eslint-disable-line no-param-reassign
         nodePromises.push(
@@ -25,20 +31,24 @@ const maintenanceController = (req, res) => {
         )
       })
 
-      /*
-         * Drop old faults from tester
-         */
+      /**
+       * Drop old faults from tester
+       */
       models.Fault.destroy({ where: { tester_id: testerObject.id } })
 
-      /*
-         * Create List of promises for slot creation
-         */
+      /**
+       * Create List of promises for slot creation
+       */
       Promise.all(nodePromises).then((allSlots) => {
         const nodeListObject = {}
         allSlots.forEach((slot) => {
           Promise.resolve(models.Monitor.destroy({ where: { slot_id: slot.id } }))
           nodeListObject[slot.slotNumber] = slot
         })
+
+        /**
+         * Create Faults per monitor
+         */
         smcData.monitorsCached.forEach((monitor) => {
           const faultArr = JSON.parse(monitor.faults)
           faultArr.forEach((fault) => {
@@ -50,13 +60,17 @@ const maintenanceController = (req, res) => {
               faultDate: new Date(fault.fault_date),
             })
               .then((createdFault) => {
+                /**
+                 * Add created faults to the tester
+                 */
                 testerObject.addFaults(createdFault)
               })
               .error(error => console.log('Error creating fault\n', error))
           })
-          /*
-             * Create monitor and add to Slot
-             */
+
+          /**
+           * Create monitor
+           */
           models.Monitor.create({
             index: monitor.index,
             value: monitor.value,
@@ -65,6 +79,9 @@ const maintenanceController = (req, res) => {
             asterix: monitor.asterix,
           })
             .then((createdMonitor) => {
+              /**
+               * Add created Monitor to Slot
+               */
               Promise.resolve(nodeListObject[monitor.node].addMonitors(createdMonitor))
             })
             .catch(error => console.log('Error creating mointor\n', error))
