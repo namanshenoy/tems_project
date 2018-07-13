@@ -1,8 +1,9 @@
 import axios from 'axios'
 import util from 'util'
+import config from './config'
 
 const helpers = {
-  graphqlQuery: (host, PORT, graphqlEndpoint, query) => axios.post(`${host}:${PORT}${graphqlEndpoint}`,
+  graphqlQuery: (host, PORT, graphqlEndpoint, query) => axios.post(`${config.graphqlHost}:${config.PORT}${config.graphqlEndpoint}`,
     {
       query,
     }),
