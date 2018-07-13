@@ -1,10 +1,11 @@
 export default `
   type Fault{
     id: Int!
-    faultNumber: Int!
-    monitor: Int!
-    value: Int!
-    date: String!
+    faultNum: Int
+    indexNum: Int
+    faultVal: Int
+    slotNum: Int
+    faultDate: String
   }
 
   type Query{

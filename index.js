@@ -123,7 +123,11 @@ app.post('/TEST_CELL/:testerName/MAINTENANCE', (req, res) => {
               indexNum: fault.index_num,
               slotNum: fault.slot_num,
               faultDate: new Date(fault.fault_date),
-            }).then(createdFault => testerObject.addFaults(createdFault))
+            })
+              .then((createdFault) => {
+                testerObject.addFaults(createdFault)
+                console.log(createdFault)
+              })
           })
           /*
            * Create monitor and add to Slot

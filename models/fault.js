@@ -19,14 +19,6 @@ export default (sequelize, DataTypes) => {
     faultDate: {
       type: DataTypes.DATE,
       field: 'fault_date',
-      get() {
-        const d = this.getDataValue(this.faultDate)
-        console.log('DATE: ', d)
-        if (d == null) {
-          return 'Setting Date. Please Try again'
-        }
-        return d.toString()
-      },
     },
   })
 
