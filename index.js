@@ -85,7 +85,7 @@ app.post('/TEST_CELL/:testerName/MAINTENANCE', (req, res) => {
   models.Tester.findOne({ name: req.params.testerName })
     .then((testerObject) => {
       smcData.nodes.forEach((node) => {
-        node.tester = testerObject.id // eslint-disable-line no-param-reassign
+        node.tester_id = testerObject.id // eslint-disable-line no-param-reassign
         helpers.upsert(models.Slot, node, {
           tester_id: testerObject.id,
           slotNumber: node.slotNumber,
