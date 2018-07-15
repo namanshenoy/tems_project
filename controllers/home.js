@@ -2,7 +2,7 @@
  * Controller for Home URL.
  * URL path for /
  * @method homeController
- * Refer to this by {@link Controllers.".homeController"}
+ * {@link Controllers.".homeController"}
  * @memberof Controllers
  * @param  {Request} req - Incoming Request
  * @param  {Response} res - Outgoing Response

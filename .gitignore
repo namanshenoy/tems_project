@@ -103,4 +103,5 @@ tags
 # Persistent undo
 [._]*.un~
 
+.commit
 # End of https://www.gitignore.io/api/node,visualstudiocode
