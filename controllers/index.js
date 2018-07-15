@@ -3,8 +3,11 @@ import configurationController from './configuration'
 import statusController from './status'
 import initializationController from './initialization'
 import homeController from './home'
-
-const controllers = {
+/**
+ * Namespace containing Controllers for TEMS endpoints
+ * @namespace Controllers
+ */
+const Controllers = {
   maintenance: maintenanceController,
   configuration: configurationController,
   status: statusController,
@@ -12,4 +15,4 @@ const controllers = {
   home: homeController,
 }
 
-export default controllers
+export default Controllers

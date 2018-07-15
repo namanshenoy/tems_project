@@ -4,7 +4,7 @@ import path from 'path'
 import { graphqlExpress, graphiqlExpress } from 'apollo-server-express'
 import { makeExecutableSchema } from 'graphql-tools'
 import { fileLoader, mergeResolvers, mergeTypes } from 'merge-graphql-schemas'
-import controllers from './controllers'
+import Controllers from './controllers'
 // import prettyjson from 'prettyjson'
 import models from './models'
 import config from './config'
@@ -39,7 +39,7 @@ if (process.env.node_env === 'development') {
 console.log('Drop Database: ', config.dbRefresh)
 
 // Server Root
-app.get('/', controllers.home)
+app.get('/', Controllers.home)
 
 app.use(config.graphqlEndpoint, bodyParser.json(), graphqlExpress({
   schema,
@@ -55,16 +55,16 @@ app.use('/graphiql', graphiqlExpress({ endpointURL: config.graphqlEndpoint }))
  */
 
 // TEMS INITIALIZATION message handler
-app.post('/TEST_CELL/:testerName/INITIALIZATION', controllers.initialization)
+app.post('/TEST_CELL/:testerName/INITIALIZATION', Controllers.initialization)
 
 // TEMS Maintenance Handler
-app.post('/TEST_CELL/:testerName/MAINTENANCE', controllers.maintenance)
+app.post('/TEST_CELL/:testerName/MAINTENANCE', Controllers.maintenance)
 
 // TEMS CONFIGURATION message handler
-app.post('/TEST_CELL/:testerName/CONFIGURATION', controllers.configuration)
+app.post('/TEST_CELL/:testerName/CONFIGURATION', Controllers.configuration)
 
 // TEMS STATUS message handler
-app.post('/TEST_CELL/:testerName/STATUS', controllers.status)
+app.post('/TEST_CELL/:testerName/STATUS', Controllers.status)
 
 // if force is true, the database will be empty upon server start
 models.sequelize.sync({ force: config.dbRefresh }).then(() => {

@@ -1,13 +1,13 @@
 import Helpers from '../helpers'
 import config from '../config'
 
-
 /**
- * Creates a Tester via GraphQL endpoint
- * Refer to this by {@link Helpers.".createTester"}
- * @method createTester
- * @memberof Helpers
- * @param  {string} testerName -Tester's name
+ * Controller for Status TEMS Message.
+ * Creates/Updates a Tester with the given information
+ * @method statusController
+ * @memberof Controllers
+ * @param  {Request} req
+ * @param  {Response} res
  */
 const statusController = (req, res) => {
   console.log(req.originalUrl)

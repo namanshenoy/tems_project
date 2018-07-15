@@ -1,11 +1,10 @@
 {
 	"opts":{
 		"encoding": "utf8",
-		"destination": "./docs/",
-		"recurse": true
+		"destination": "./docs/"
 	} ,
 	"source": {
-		"include": ["."],
+		"include": [".", "README.md", "./controllers", "./resolvers", "./models" ],
 		"exclude":["./node_modules", "./docs", "./package.json", "./package-lock.json"]
 	}
 }

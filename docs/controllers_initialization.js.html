@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: controllers/status.js</title>
+    <title>JSDoc: Source: controllers/initialization.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: controllers/status.js</h1>
+    <h1 class="page-title">Source: controllers/initialization.js</h1>
 
     
 
@@ -26,39 +26,22 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>import Helpers from '../helpers'
-import config from '../config'
-
-/**
- * Controller for Status TEMS Message.
- * Creates/Updates a Tester with the given information
- * @method statusController
+            <pre class="prettyprint source linenums"><code>/**
+ * Controller for Initialization TEMS Message.
+ * NOT YET INPLEMENTED
+ * @method initializationController
  * @memberof Controllers
  * @param  {Request} req
  * @param  {Response} res
  */
-const statusController = (req, res) => {
+
+const initializationController = (req, res) => {
   console.log(req.originalUrl)
   res.sendStatus(200)
-
-  Helpers.graphqlQuery(config.graphqlHost, config.PORT, config.graphqlEndpoint,
-    `mutation {
-      updateStatus:setTesterStatus(name:"${req.params.testerName}", status:"${req.body.STATUS}")
-    }`)
-    .then((response) => {
-      const updated = response.data.data.updateStatus
-
-      if (!updated) {
-        console.log('Updated ', req.params.testerName, ',', updated)
-        Helpers.createTesterKWargs(config.graphqlHost, config.PORT, config.graphqlEndpoint, {
-          name: req.params.testerName, status: req.body.STATUS,
-        })
-      }
-    })
-    .catch(err => console.log('Error in Status API!\n', err))
+  console.log('Tester: ', req.params.testerName)
 }
 
-export default statusController
+export default initializationController
 </code></pre>
         </article>
     </section>
