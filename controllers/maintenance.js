@@ -7,7 +7,7 @@ import Helpers from '../helpers'
  * Maintenance message has 2 types:
  *  <ul>
  *  <li>SMC Data message: Contains list of Nodes, Monitors, Index and values
- *     , warnings and faults</li?
+ *     , warnings and faults</li>
  *  <br>
  *  <li>Files: Contains data from Maintenance Data Files</li>
  *  </ul>
