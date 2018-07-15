@@ -1,5 +1,5 @@
 import models from '../models'
-import helpers from '../helpers'
+import Helpers from '../helpers'
 
 const maintenanceController = (req, res) => {
   console.log(req.originalUrl)
@@ -18,7 +18,7 @@ const maintenanceController = (req, res) => {
       smcData.nodes.forEach((node) => {
         node.tester_id = testerObject.id // eslint-disable-line no-param-reassign
         nodePromises.push(
-          helpers.upsert(models.Slot, node, {
+          Helpers.upsert(models.Slot, node, {
             tester_id: testerObject.id,
             slotNumber: node.slotNumber,
           }),

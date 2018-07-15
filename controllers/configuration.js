@@ -1,5 +1,5 @@
 import models from '../models'
-import helpers from '../helpers'
+import Helpers from '../Helpers'
 
 const maintenanceController = (req, res) => {
   console.log(req.originalUrl)
@@ -8,7 +8,7 @@ const maintenanceController = (req, res) => {
 
   // foreach board, create a slot, add the board to the slot.
   // Gather the set of boards, then add it as a set to the tester with Tester.setSlots
-  const testerPromise = helpers.upsert(models.Tester, {
+  const testerPromise = Helpers.upsert(models.Tester, {
     name: req.params.testerName,
   },
   {
@@ -23,7 +23,7 @@ const maintenanceController = (req, res) => {
       })
         .then((updatedTesterObject) => {
           req.body.BOARD.forEach((configBoard) => {
-            const slotPromise = helpers.upsert(models.Slot, {
+            const slotPromise = Helpers.upsert(models.Slot, {
               slotNumber: configBoard.SLOT,
             }, {
               tester_id: updatedTesterObject.id, slotNumber: configBoard.SLOT,
@@ -31,7 +31,7 @@ const maintenanceController = (req, res) => {
             Promise.resolve(slotPromise)
               .then((slotObject) => {
                 // console.log('Inserting Slot: ', configBoard.SLOT)
-                const boardPromise = helpers.upsert(models.Board, {
+                const boardPromise = Helpers.upsert(models.Board, {
                   boardId: configBoard.BOARD_ID,
                   name: configBoard.NAME,
                   partNumber: configBoard.PART_NUMBER,
