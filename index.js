@@ -70,6 +70,6 @@ app.post('/TEST_CELL/:testerName/STATUS', Controllers.status)
 models.sequelize.sync({ force: config.dbRefresh }).then(() => {
   // Start server
   app.listen(config.PORT, config.host)
-  console.log(`${config.graphqlHost}:${config.PORT}${config.graphqlEndpoint}`)
+  console.log(`Graphql Endpoint: ${config.graphqlHost}:${config.PORT}${config.graphqlEndpoint}`)
   console.log(`App is listening at host ${config.host} port ${config.PORT}`)
 })

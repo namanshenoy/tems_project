@@ -3,8 +3,8 @@
  * NOT YET INPLEMENTED
  * @method initializationController
  * @memberof Controllers
- * @param  {Request} req
- * @param  {Response} res
+ * @param  {Request} req - Incoming Request
+ * @param  {Response} res - Outgoing Response
  */
 
 const initializationController = (req, res) => {

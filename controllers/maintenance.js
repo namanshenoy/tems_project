@@ -12,7 +12,7 @@ import Helpers from '../helpers'
  *  &emsp;2. Files: Contains data from Maintenance Data Files
  *
  * @method maintenanceController
- * Refer to this by {@link Controllers.".maintenanceController"}
+ * {@link Controllers.".maintenanceController"}
  * @memberof Controllers
  * @param  {Request} req - Incoming Request
  * @param  {Response} res - Outgoing Response
