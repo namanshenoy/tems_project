@@ -5,12 +5,12 @@ import Helpers from '../helpers'
  * Controller for Maintenace TEMS Message.
  * Creates/Updates a Tester with the given information
  * Maintenance message has 2 types:
+ *  <ul>
+ *  <li>SMC Data message: Contains list of Nodes, Monitors, Index and values
+ *     , warnings and faults</li?
  *  <br>
- *  &emsp;1. SMC Data message: Contains list of Nodes, Monitors, Index and values
- *     , warnings and faults
- *  <br>
- *  &emsp;2. Files: Contains data from Maintenance Data Files
- *
+ *  <li>Files: Contains data from Maintenance Data Files</li>
+ *  </ul>
  * @method maintenanceController
  * {@link Controllers.".maintenanceController"}
  * @memberof Controllers
