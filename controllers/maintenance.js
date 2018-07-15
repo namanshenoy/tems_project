@@ -67,7 +67,7 @@ const maintenanceController = (req, res) => {
             .then((createdMonitor) => {
               Promise.resolve(nodeListObject[monitor.node].addMonitors(createdMonitor))
             })
-            .catch(error => console.log('Error creating mointor\n', error))
+            .catch(error => console.log('Error creating monitor\n', error))
         })
       })
     })

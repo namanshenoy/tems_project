@@ -1,0 +1,11 @@
+{
+	"opts":{
+		"encoding": "utf8",
+		"destination": "./docs/",
+		"recurse": true
+	} ,
+	"source": {
+		"include": ["."],
+		"exclude":["./node_modules", "./docs", "./package.json", "./package-lock.json"]
+	}
+}
