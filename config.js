@@ -8,7 +8,7 @@ const config = {
     username: 'postgres',
     password: 'postgres',
   },
-  dbRefresh: true,
+  dbRefresh: false,
 }
 
 export default config

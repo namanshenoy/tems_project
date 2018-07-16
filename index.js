@@ -4,6 +4,7 @@ import path from 'path'
 import { graphqlExpress, graphiqlExpress } from 'apollo-server-express'
 import { makeExecutableSchema } from 'graphql-tools'
 import { fileLoader, mergeResolvers, mergeTypes } from 'merge-graphql-schemas'
+import cors from 'cors'
 import Controllers from './controllers'
 // import prettyjson from 'prettyjson'
 import models from './models'
@@ -37,7 +38,7 @@ console.log('Drop Database: ', config.dbRefresh)
 // Server Root
 app.get('/', Controllers.home)
 
-app.use(config.graphqlEndpoint, bodyParser.json(), graphqlExpress({
+app.use(config.graphqlEndpoint, cors(), bodyParser.json(), graphqlExpress({
   schema,
   context: {
     models,

@@ -1,4 +1,3 @@
-import Promise from 'bluebird'
 import models from '../models'
 import Helpers from '../helpers'
 
@@ -13,7 +12,6 @@ import Helpers from '../helpers'
  * @param  {Response} res - Outgoing Response
  */
 const configurationController = (req, res) => {
-  Promise.longStackTraces()
 
   console.log(req.originalUrl)
   res.sendStatus(200)

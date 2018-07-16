@@ -52,6 +52,9 @@
                 </small>
               </footer>
             </blockquote>
+            <template v-for="tester in testers" >
+              <h2 :key="tester.id">{{tester.name}}</h2>
+            </template>
           </v-layout>
         </v-slide-y-transition>
       </v-container>
@@ -78,9 +81,12 @@
 </template>
 
 <script>
+  import gql from 'graphql-tag'
+
   export default {
     data () {
       return {
+        tester: [],
         clipped: false,
         drawer: true,
         fixed: false,
@@ -91,6 +97,12 @@
         right: true,
         rightDrawer: false,
         title: 'Vuetify.js'
+      }
+    },
+    apollo: {
+      testers: {
+        query: gql`query { getAllTesters{name id}}`,
+        update: result => result.getAllTesters
       }
     }
   }
