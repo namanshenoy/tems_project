@@ -50,6 +50,9 @@
                 <small>
                   <em>&mdash;John Johnson</em>
                 </small>
+                <ul>
+                  <li v-for="tester in testers" :key="tester.id">{{tester.name}}</li>
+                </ul>
               </footer>
             </blockquote>
           </v-layout>
@@ -78,9 +81,12 @@
 </template>
 
 <script>
+import gql from 'graphql-tag'
+
   export default {
     data () {
       return {
+        testers: '',
         clipped: false,
         drawer: true,
         fixed: false,
@@ -90,8 +96,12 @@
         miniVariant: false,
         right: true,
         rightDrawer: false,
-        title: 'Vuetify.js'
+        title: 'Vuetify.js',
+
       }
+    },
+    apollo: {
+      testers: { query: gql`query {getAllTesters{name}}`, update(data) { console.log(data); return data.getAllTesters } }
     }
   }
 </script>

@@ -1,9 +1,11 @@
 import express from 'express'
 import bodyParser from 'body-parser'
 import path from 'path'
+import cors from 'cors'
 import { graphqlExpress, graphiqlExpress } from 'apollo-server-express'
 import { makeExecutableSchema } from 'graphql-tools'
 import { fileLoader, mergeResolvers, mergeTypes } from 'merge-graphql-schemas'
+import serveStatic from 'serve-static'
 import Controllers from './controllers'
 // import prettyjson from 'prettyjson'
 import models from './models'
@@ -39,9 +41,11 @@ if (process.env.node_env === 'development') {
 console.log('Drop Database: ', config.dbRefresh)
 
 // Server Root
-app.get('/', Controllers.home)
 
-app.use(config.graphqlEndpoint, bodyParser.json(), graphqlExpress({
+app.use(serveStatic(`${__dirname}\\frontend\\dist`))
+console.log(`${__dirname}\\frontend\\dist`)
+
+app.use(config.graphqlEndpoint, cors(), bodyParser.json(), graphqlExpress({
   schema,
   context: {
     models,
