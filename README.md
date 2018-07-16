@@ -27,7 +27,7 @@ npm run start
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Requires PostgreSQL server to be installed.
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Change Postgres settings in `./models/index.js`
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Change Postgres settings in `./config.js`
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;This will be in the `TEMS_DB` environment variable during production
 
 ---
@@ -35,7 +35,7 @@ npm run start
 <h2>Sample Graphql Query</h2>
 
 <details><summary>Expand</summary>
-<p>
+<pre>
   
 ```
 {
@@ -61,7 +61,7 @@ npm run start
 }
 ```
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Will return 
+Will return 
 
 ```
 {
@@ -97,5 +97,5 @@ npm run start
   }
 }
 ```
-</p>
+</pre>
 </details>

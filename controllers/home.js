@@ -1,9 +1,13 @@
-
 /**
- * Controls messages recieved at the / endpoint
- * @param {Request} req - Request from client
- * @param {Response} res - Request to client
+ * Controller for Home URL.
+ * URL path for /
+ * @method homeController
+ * {@link Controllers.".homeController"}
+ * @memberof Controllers
+ * @param  {Request} req - Incoming Request
+ * @param  {Response} res - Outgoing Response
  */
+
 const homeController = (req, res) => {
   res.status(200).send({
     message: 'Hello there, General Kenobi!',

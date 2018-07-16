@@ -1,94 +1,103 @@
 import models from '../models'
-import helpers from '../helpers'
+import Helpers from '../helpers'
 
-const maintenanceController = (req, res) => {
-  console.log(req.originalUrl)
-  res.sendStatus(200)
-
-  const smcData = JSON.parse(req.body.MAINT_DESCRIPTION_LIST)
-
+/**
+ * Controller for Maintenace TEMS Message.
+ * Creates/Updates a Tester with the given information
+ * Maintenance message has 2 types:
+ *  <ul>
+ *  <li>SMC Data message: Contains list of Nodes, Monitors, Index and values
+ *     , warnings and faults</li>
+ *  <br>
+ *  <li>Files: Contains data from Maintenance Data Files</li>
+ *  </ul>
+ * @module Controllers/maintenanceController
+ */
+const maintenanceController = {
   /**
-   * List of Promises that need to be completed in order to
-   * update the lot relations
+   * Controller
+   *
+   * @memberof Controllers/maintenanceController.controller
+   * @exports maintenanceController.controller
+   * @method
+   * @param  {Request} req - Incoming Request
+   * @param  {} res
    */
-  const nodePromises = []
-
-  /**
-   * Get current Tester Object
-   */
-  models.Tester.findOne({ name: req.params.testerName })
-    .then((testerObject) => {
-      /**
-       * Create a map of Slot update
-       */
-      smcData.nodes.forEach((node) => {
-        node.tester_id = testerObject.id // eslint-disable-line no-param-reassign
-        nodePromises.push(
-          helpers.upsert(models.Slot, node, {
-            tester_id: testerObject.id,
-            slotNumber: node.slotNumber,
-          }),
-        )
-      })
-
-      /**
-       * Drop old faults from tester
-       */
-      models.Fault.destroy({ where: { tester_id: testerObject.id } })
-
-      /**
-       * Create List of promises for slot creation
-       */
-      Promise.all(nodePromises).then((allSlots) => {
-        const nodeListObject = {}
-        allSlots.forEach((slot) => {
-          Promise.resolve(models.Monitor.destroy({ where: { slot_id: slot.id } }))
-          nodeListObject[slot.slotNumber] = slot
+  controller: (req, res) => {
+    console.log(req.originalUrl)
+    res.sendStatus(200)
+    const smcData = maintenanceController.parseSMCData(req)
+    maintenanceController.getTester(req).then((testerObject) => {
+      const upsertNodesPromises = maintenanceController.upsertNodes(smcData, testerObject)
+      maintenanceController.destroyFaults(testerObject)
+      Promise.all(upsertNodesPromises)
+        .then((allSlots) => {
+          const slotIdToSlotMap = maintenanceController.createSlotIdToSlotMap(allSlots)
+          maintenanceController.createMonitorsAndFaults(smcData, testerObject, slotIdToSlotMap)
         })
-
-        /**
-         * Create Faults per monitor
-         */
-        smcData.monitorsCached.forEach((monitor) => {
-          const faultArr = JSON.parse(monitor.faults)
-          faultArr.forEach((fault) => {
-            models.Fault.create({
-              faultNum: fault.fault_num,
-              faultVal: fault.fault_val,
-              indexNum: fault.index_num,
-              slotNum: fault.slot_num,
-              faultDate: new Date(fault.fault_date),
-            })
-              .then((createdFault) => {
-                /**
-                 * Add created faults to the tester
-                 */
-                testerObject.addFaults(createdFault)
-              })
-              .error(error => console.log('Error creating fault\n', error))
-          })
-
-          /**
-           * Create monitor
-           */
-          models.Monitor.create({
-            index: monitor.index,
-            value: monitor.value,
-            unit: monitor.unit,
-            name: monitor.name,
-            asterix: monitor.asterix,
-          })
-            .then((createdMonitor) => {
-              /**
-               * Add created Monitor to Slot
-               */
-              Promise.resolve(nodeListObject[monitor.node].addMonitors(createdMonitor))
-            })
-            .catch(error => console.log('Error creating mointor\n', error))
-        })
-      })
+        .catch(error => console.log('Error in maintenance controller:\n', error))
     })
-    .catch(error => console.log('Error generating node promises\n', error))
+  },
+
+  parseSMCData: req => JSON.parse(req.body.MAINT_DESCRIPTION_LIST),
+
+  getTester: req => models.Tester.findOne({ name: req.params.testerName }),
+
+  upsertNodes: (smcData, testerObject) => {
+    const nodeUpsertPromises = []
+    smcData.nodes.forEach((node) => {
+      node.tester_id = testerObject.id // eslint-disable-line no-param-reassign
+      const nodeUpsertPromise = Helpers.upsert(models.Slot, node, {
+        tester_id: testerObject.id,
+        slotNumber: node.slotNumber,
+      })
+      nodeUpsertPromises.push(
+        nodeUpsertPromise,
+      )
+    })
+    return nodeUpsertPromises
+  },
+
+  createSlotIdToSlotMap: (allSlots) => {
+    const slotIdToSlotMap = []
+    allSlots.forEach((slot) => {
+      Promise.resolve(models.Monitor.destroy({ where: { slot_id: slot.id } }))
+      slotIdToSlotMap[slot.slotNumber] = slot
+    })
+    return slotIdToSlotMap
+  },
+
+  destroyFaults: testerObject => models.Fault.destroy({ where: { tester_id: testerObject.id } }),
+
+  createFaults: (testerObject, faultArray) => {
+    faultArray.forEach((fault) => {
+      models.Fault.create({
+        faultNum: fault.fault_num,
+        faultVal: fault.fault_val,
+        indexNum: fault.index_num,
+        slotNum: fault.slot_num,
+        faultDate: new Date(fault.fault_date),
+      })
+        .then(createdFault => testerObject.addFaults(createdFault))
+        .error(error => console.log('Error creating fault\n', error))
+    })
+  },
+
+  createMonitorsAndFaults: (smcData, testerObject, slotIdToSlotMap) => {
+    smcData.monitorsCached.forEach((monitor) => {
+      maintenanceController.createFaults(testerObject, JSON.parse(monitor.faults))
+      models.Monitor.create({
+        index: monitor.index,
+        value: monitor.value,
+        unit: monitor.unit,
+        name: monitor.name,
+        asterix: monitor.asterix,
+      })
+        .then(createdMonitor => Promise.resolve(slotIdToSlotMap[monitor.node]
+          .addMonitors(createdMonitor)))
+        .catch(error => console.log('Error creating monitor\n', error))
+    })
+  },
 }
 
-export default maintenanceController
+export default maintenanceController.controller

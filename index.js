@@ -4,7 +4,7 @@ import path from 'path'
 import { graphqlExpress, graphiqlExpress } from 'apollo-server-express'
 import { makeExecutableSchema } from 'graphql-tools'
 import { fileLoader, mergeResolvers, mergeTypes } from 'merge-graphql-schemas'
-import controllers from './controllers'
+import Controllers from './controllers'
 // import prettyjson from 'prettyjson'
 import models from './models'
 import config from './config'
@@ -35,11 +35,7 @@ if (process.env.node_env === 'development') {
 console.log('Drop Database: ', config.dbRefresh)
 
 // Server Root
-
-
-/**
-* Graph QL Endpoints
-*/
+app.get('/', Controllers.home)
 
 app.use(config.graphqlEndpoint, bodyParser.json(), graphqlExpress({
   schema,
@@ -55,19 +51,20 @@ app.use('/graphiql', graphiqlExpress({ endpointURL: config.graphqlEndpoint }))
 */
 
 // Home
-app.get('/', controllers.home)
+app.get('/', Controllers.home)
 
 // TEMS INITIALIZATION message handler
-app.post('/TEST_CELL/:testerName/INITIALIZATION', controllers.initialization)
+app.post('/TEST_CELL/:testerName/INITIALIZATION', Controllers.initialization)
 
 // TEMS Maintenance Handler
-app.post('/TEST_CELL/:testerName/MAINTENANCE', controllers.maintenance)
+// This controller is different. Uses the functional programming I was learning.
+app.post('/TEST_CELL/:testerName/MAINTENANCE', Controllers.maintenance)
 
 // TEMS CONFIGURATION message handler
-app.post('/TEST_CELL/:testerName/CONFIGURATION', controllers.configuration)
+app.post('/TEST_CELL/:testerName/CONFIGURATION', Controllers.configuration)
 
 // TEMS STATUS message handler
-app.post('/TEST_CELL/:testerName/STATUS', controllers.status)
+app.post('/TEST_CELL/:testerName/STATUS', Controllers.status)
 
 
 /**
@@ -77,6 +74,6 @@ app.post('/TEST_CELL/:testerName/STATUS', controllers.status)
 models.sequelize.sync({ force: config.dbRefresh }).then(() => {
   // Start server
   app.listen(config.PORT, config.host)
-  console.log(`${config.graphqlHost}:${config.PORT}${config.graphqlEndpoint}`)
+  console.log(`Graphql Endpoint: ${config.graphqlHost}:${config.PORT}${config.graphqlEndpoint}`)
   console.log(`App is listening at host ${config.host} port ${config.PORT}`)
 })
