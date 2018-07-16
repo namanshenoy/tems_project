@@ -58,6 +58,7 @@ app.use('/graphiql', graphiqlExpress({ endpointURL: config.graphqlEndpoint }))
 app.post('/TEST_CELL/:testerName/INITIALIZATION', Controllers.initialization)
 
 // TEMS Maintenance Handler
+// This controller is different. Uses the functional programming I was learning.
 app.post('/TEST_CELL/:testerName/MAINTENANCE', Controllers.maintenance)
 
 // TEMS CONFIGURATION message handler

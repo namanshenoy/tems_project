@@ -28,7 +28,7 @@ const Helpers = {
    * @param  {string} testerName -Tester's name
    */
   createTester: (testerName) => {
-    axios.post(`${config.host}:${config.PORT}${config.graphqlEndpoint}`, {
+    axios.post(`${config.graphqlHost}:${config.PORT}${config.graphqlEndpoint}`, {
       query:
         `mutation {
             created:createTester(name:"${testerName}"){id}
@@ -49,7 +49,7 @@ const Helpers = {
     let argString = util.inspect(args)
     argString = argString.replace(/[']/g, '"').replace(/[{}\n]|/g, '')
     console.log('ARG STRING: ', argString)
-    axios.post(`${config.host}:${config.PORT}${config.graphqlEndpoint}`, {
+    axios.post(`${config.graphqlHost}:${config.PORT}${config.graphqlEndpoint}`, {
       query:
         `mutation {
             created:createTester(${argString}){id}
@@ -67,7 +67,7 @@ const Helpers = {
    * @param  {Object} condition - Sequelize where conditions for when to insert/update item
    * @return {Promise} Promise containing the updated item(s)
    */
-  upsert: (model, values, condition) => model
+  upsert: (model, values, condition) => (model)
     .findOne({ where: condition })
     .then((obj) => {
       if (obj) {

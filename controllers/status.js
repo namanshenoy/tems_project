@@ -1,5 +1,4 @@
 import Helpers from '../helpers'
-import config from '../config'
 
 /**
  * Controller for Status TEMS Message.
@@ -13,16 +12,17 @@ const statusController = (req, res) => {
   console.log(req.originalUrl)
   res.sendStatus(200)
 
-  Helpers.graphqlQuery(config.graphqlHost, config.PORT, config.graphqlEndpoint,
+  Helpers.graphqlQuery(
     `mutation {
       updateStatus:setTesterStatus(name:"${req.params.testerName}", status:"${req.body.STATUS}")
-    }`)
+    }`,
+  )
     .then((response) => {
       const updated = response.data.data.updateStatus
 
       if (!updated) {
         console.log('Updated ', req.params.testerName, ',', updated)
-        Helpers.createTesterKWargs(config.graphqlHost, config.PORT, config.graphqlEndpoint, {
+        Helpers.createTesterKWargs({
           name: req.params.testerName, status: req.body.STATUS,
         })
       }
