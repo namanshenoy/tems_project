@@ -21,12 +21,12 @@ const apolloClient = new ApolloClient({
   connectToDevTools: true,
 })
 
+// Install the vue plugin
+Vue.use(VueApollo)
+
 const apolloProvider = new VueApollo({
   defaultClient: apolloClient,
 })
-
-// Install the vue plugin
-Vue.use(VueApollo)
 
 new Vue({ // eslint-disable-line no-new
   el: '#app',

@@ -5,7 +5,7 @@ import cors from 'cors'
 import { graphqlExpress, graphiqlExpress } from 'apollo-server-express'
 import { makeExecutableSchema } from 'graphql-tools'
 import { fileLoader, mergeResolvers, mergeTypes } from 'merge-graphql-schemas'
-import serveStatic from 'serve-static'
+import cors from 'cors'
 import Controllers from './controllers'
 // import prettyjson from 'prettyjson'
 import models from './models'
@@ -13,6 +13,7 @@ import config from './config'
 
 const typeDefs = mergeTypes(fileLoader(path.join(__dirname, './schema')))
 const resolvers = mergeResolvers(fileLoader(path.join(__dirname, './resolvers')))
+
 const schema = makeExecutableSchema({
   typeDefs,
   resolvers,
@@ -20,18 +21,13 @@ const schema = makeExecutableSchema({
 
 const app = express()
 
-/*
+/**
  * app setup
  */
 
 // bodyParser is needed just for POST.
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
-
-
-/*
- * Graph QL Endpoints
- */
 
 // Check if in developer mode
 if (process.env.node_env === 'development') {
@@ -42,9 +38,6 @@ console.log('Drop Database: ', config.dbRefresh)
 
 // Server Root
 
-app.use(serveStatic(`${__dirname}\\frontend\\dist`))
-console.log(`${__dirname}\\frontend\\dist`)
-
 app.use(config.graphqlEndpoint, cors(), bodyParser.json(), graphqlExpress({
   schema,
   context: {
@@ -54,9 +47,12 @@ app.use(config.graphqlEndpoint, cors(), bodyParser.json(), graphqlExpress({
 
 app.use('/graphiql', graphiqlExpress({ endpointURL: config.graphqlEndpoint }))
 
-/*
- * Non GraphQL Endpoints
- */
+/**
+* Non GraphQL Endpoints
+*/
+
+// Home
+app.get('/', Controllers.home)
 
 // TEMS INITIALIZATION message handler
 app.post('/TEST_CELL/:testerName/INITIALIZATION', Controllers.initialization)
@@ -71,7 +67,11 @@ app.post('/TEST_CELL/:testerName/CONFIGURATION', Controllers.configuration)
 // TEMS STATUS message handler
 app.post('/TEST_CELL/:testerName/STATUS', Controllers.status)
 
-// if force is true, the database will be empty upon server start
+
+/**
+ * Server Startup
+ * if force is true, the database will be empty upon server start
+ */
 models.sequelize.sync({ force: config.dbRefresh }).then(() => {
   // Start server
   app.listen(config.PORT, config.host)
