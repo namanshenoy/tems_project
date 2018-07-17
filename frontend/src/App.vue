@@ -1,111 +1,42 @@
 <template>
   <v-app>
-    <v-navigation-drawer
-      fixed
-      :mini-variant="miniVariant"
-      :clipped="clipped"
-      v-model="drawer"
-      app
-    >
-      <v-list>
-        <v-list-tile 
-          value="true"
-          v-for="(item, i) in items"
-          :key="i"
-        >
-          <v-list-tile-action>
-            <v-icon v-html="item.icon"></v-icon>
-          </v-list-tile-action>
-          <v-list-tile-content>
-            <v-list-tile-title v-text="item.title"></v-list-tile-title>
-          </v-list-tile-content>
-        </v-list-tile>
-      </v-list>
-    </v-navigation-drawer>
-    <v-toolbar fixed app :clipped-left="clipped">
-      <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon>
-      <v-btn icon @click.stop="miniVariant = !miniVariant">
-        <v-icon v-html="miniVariant ? 'chevron_right' : 'chevron_left'"></v-icon>
-      </v-btn>
-      <v-btn icon @click.stop="clipped = !clipped">
-        <v-icon>web</v-icon>
-      </v-btn>
-      <v-btn icon @click.stop="fixed = !fixed">
-        <v-icon>remove</v-icon>
-      </v-btn>
-      <v-toolbar-title v-text="title"></v-toolbar-title>
-      <v-spacer></v-spacer>
-      <v-btn icon @click.stop="rightDrawer = !rightDrawer">
-        <v-icon>menu</v-icon>
-      </v-btn>
-    </v-toolbar>
+    <navbar-toolbar></navbar-toolbar>
     <v-content>
-      <v-container fluid>
-        <v-slide-y-transition mode="out-in">
-          <v-layout column align-center>
-            <img src="/public/v.png" alt="Vuetify.js" class="mb-5" />
-            <blockquote>
-              &#8220;First, solve the problem. Then, write the code.&#8221;
-              <footer>
-                <small>
-                  <em>&mdash;John Johnson</em>
-                </small>
-                <ul>
-                  <li v-for="tester in testers" :key="tester.id">{{tester.name}}</li>
-                </ul>
-              </footer>
-            </blockquote>
-            <template v-for="tester in testers" >
-              <h2 :key="tester.id">{{tester.name}}</h2>
-            </template>
-          </v-layout>
-        </v-slide-y-transition>
+      <v-container fluid pr-5>
+        <tester-table :testers="testers"></tester-table>
       </v-container>
     </v-content>
-    <v-navigation-drawer
-      temporary
-      :right="right"
-      v-model="rightDrawer"
-      fixed
-    >
-      <v-list>
-        <v-list-tile @click.native="right = !right">
-          <v-list-tile-action>
-            <v-icon>compare_arrows</v-icon>
-          </v-list-tile-action>
-          <v-list-tile-title>Switch drawer (click me)</v-list-tile-title>
-        </v-list-tile>
-      </v-list>
-    </v-navigation-drawer>
-    <v-footer :fixed="fixed" app>
-      <span>&copy; 2017</span>
+    <v-footer  :fixed="true" app>
+      <span style="text-align:center">Teradyne &copy; 2017</span>
     </v-footer>
   </v-app>
 </template>
 
 <script>
   import gql from 'graphql-tag'
+  import testerBar from './components/testerBar'
+  import navbarToolbar from './components/navbarToolbar'
+  import testerTable from './components/testerTable'
 
   export default {
+    components: {
+      testerBar,
+      navbarToolbar,
+      testerTable,
+    },
     data () {
       return {
-        tester: [],
-        clipped: false,
-        drawer: true,
-        fixed: false,
-        items: [
-          { icon: 'bubble_chart', title: 'Inspire' }
-        ],
-        miniVariant: false,
-        right: true,
-        rightDrawer: false,
-        title: 'Vuetify.js',
-
+        testers: [],
+        drawer: false,
       }
     },
     apollo: {
       testers: {
-        query: gql`query { getAllTesters{name id}}`,
+        query: gql`query { 
+                            getAllTesters{
+                              name id igxlVersion status
+                            }
+                          }`,
         update: result => result.getAllTesters
       }
     }
