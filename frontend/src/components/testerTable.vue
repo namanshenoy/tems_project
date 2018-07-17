@@ -13,14 +13,14 @@
           <v-avatar>
           <v-icon>{{ getStatusFromText(props.item.status).icon }}</v-icon>
           </v-avatar>
-          {{props.item.status || 'NONE'}}
+          {{ props.item.status || 'NONE' }}
         </v-chip>
     </td>
     </tr>
   </template>
   <template slot="expand" slot-scope="props">
     <v-card flat color="blue-grey darken-2" class="white--text">
-      <v-card-text>IGXL Version = {{props.item.igxlVersion}}</v-card-text>
+      <v-card-text>IGXL Version = {{ props.item.igxlVersion }}</v-card-text>
     </v-card>
   </template>
   </v-data-table>
@@ -28,7 +28,7 @@
 <script>
 const testerTable = {
   name: 'testerTable',
-  props: ['testers'],
+  props: {'testers': Array},
   data: () => ({}),
   methods: {
     getStatusFromText(status){
