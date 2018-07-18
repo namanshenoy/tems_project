@@ -34,7 +34,7 @@
       testers: {
         query: gql`query { 
                             getAllTesters{
-                              name id igxlVersion status
+                              name id igxlVersion status updated_at
                             }
                           }`,
         update: result => result.getAllTesters

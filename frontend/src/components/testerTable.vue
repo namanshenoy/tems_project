@@ -42,8 +42,9 @@ const testerTable = {
         default:
           return {bg: 'blue', text: 'white', icon: 'warning'}
       }
-    }
-  }
+    },
+
+  },
 }
 
 export default testerTable

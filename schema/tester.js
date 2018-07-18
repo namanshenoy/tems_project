@@ -8,6 +8,7 @@ type Tester{
   Warnings: [Warning]
   status: String
   model: String
+  updated_at: String
 }
 
 type Query {
