@@ -25,8 +25,8 @@ const app = express()
  */
 
 // bodyParser is needed just for POST.
-app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({ extended: true }))
+app.use(bodyParser.json({ limit: '5mb' }))
+app.use(bodyParser.urlencoded({ extended: true, limit: '5mb', parameterLimit: 100000 }))
 
 // Check if in developer mode
 if (process.env.node_env === 'development') {

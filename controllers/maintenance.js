@@ -25,9 +25,19 @@ const maintenanceController = {
    */
   controller: (req, res) => {
     console.log(req.originalUrl)
+    console.log('size', req.headers['content-length'])
     res.sendStatus(200)
     const smcData = maintenanceController.parseSMCData(req)
-    maintenanceController.getTester(req).then((testerObject) => {
+    if (smcData.messageType === 'NodesAndMonitors') {
+      maintenanceController.smcDataController(req.params.testerName, smcData)
+    }
+    if (smcData.messageType === 'Warnings') {
+      console.log(JSON.stringify(smcData, null, 2))
+    }
+  },
+
+  smcDataController: (testerName, smcData) => {
+    maintenanceController.getTester(testerName).then((testerObject) => {
       const upsertNodesPromises = maintenanceController.upsertNodes(smcData, testerObject)
       maintenanceController.destroyFaults(testerObject)
       Promise.all(upsertNodesPromises)
@@ -41,11 +51,15 @@ const maintenanceController = {
 
   parseSMCData: req => JSON.parse(req.body.MAINT_DESCRIPTION_LIST),
 
-  getTester: req => models.Tester.findOne({ name: req.params.testerName }),
-
+  getTester: (testerName) => {
+    console.log(testerName)
+    return models.Tester.findOne({ name: testerName })
+  },
   upsertNodes: (smcData, testerObject) => {
     const nodeUpsertPromises = []
     smcData.nodes.forEach((node) => {
+      // console.log(testerObject)
+      // console.log('Inserting Slot for tester: ', testerObject.id)
       node.tester_id = testerObject.id // eslint-disable-line no-param-reassign
       const nodeUpsertPromise = Helpers.upsert(models.Slot, node, {
         tester_id: testerObject.id,
@@ -93,8 +107,9 @@ const maintenanceController = {
         name: monitor.name,
         asterix: monitor.asterix,
       })
-        .then(createdMonitor => Promise.resolve(slotIdToSlotMap[monitor.node]
-          .addMonitors(createdMonitor)))
+        .then((createdMonitor) => {
+          slotIdToSlotMap[monitor.node].addMonitors(createdMonitor)
+        })
         .catch(error => console.log('Error creating monitor\n', error))
     })
   },
