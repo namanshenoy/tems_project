@@ -1,3 +1,4 @@
+import moment from 'moment'
 import models from '../models'
 import Helpers from '../helpers'
 
@@ -21,19 +22,39 @@ const maintenanceController = {
    * @exports maintenanceController.controller
    * @method
    * @param  {Request} req - Incoming Request
-   * @param  {} res
+   * @param  {Response} res - Outgoing Response
    */
   controller: (req, res) => {
     console.log(req.originalUrl)
     console.log('size', req.headers['content-length'])
-    res.sendStatus(200)
     const smcData = maintenanceController.parseSMCData(req)
+    console.log('Message Type', smcData.messageType)
     if (smcData.messageType === 'NodesAndMonitors') {
+      res.sendStatus(200)
       maintenanceController.smcDataController(req.params.testerName, smcData)
+    } else if (smcData.messageType === 'Warnings') {
+      res.sendStatus(200)
+      // console.log(JSON.stringify(smcData, null, 2))
+      maintenanceController.warningDataController(req.params.testerName, smcData)
+    } else {
+      res.sendStatus(400)
     }
-    if (smcData.messageType === 'Warnings') {
-      console.log(JSON.stringify(smcData, null, 2))
-    }
+  },
+
+  warningDataController: (testerName, smcData) => {
+    console.log('Inserting Warnings for tester: ', testerName)
+    maintenanceController.getTester(testerName)
+      .then((testerObject) => {
+        console.log(smcData)
+        smcData.warningList.forEach((warning) => {
+          console.log(warning)
+          console.log(warning.datetime)
+          models.Warning.create({
+            message: warning.message,
+            date: moment(warning.datetime).toDate(),
+          }).then(createdWarning => testerObject.addWarnings(createdWarning))
+        })
+      })
   },
 
   smcDataController: (testerName, smcData) => {

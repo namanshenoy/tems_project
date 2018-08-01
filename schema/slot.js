@@ -2,7 +2,7 @@ export default `
 type Slot{
   id: Int!
   slotNumber: Int!
-  neuronId: String
+  neuronID: String
   eepromData: String
   swRevDate: String
   limitRevDate: String

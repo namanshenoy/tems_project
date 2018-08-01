@@ -4,7 +4,7 @@ export default (sequelize, DataTypes) => {
       type: DataTypes.INTEGER,
       field: 'slot_number',
     },
-    neuronId: {
+    neuronID: {
       type: DataTypes.STRING,
       field: 'neuron_id',
     },
