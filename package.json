@@ -43,7 +43,7 @@
     "moment": "^2.22.2",
     "pg": "^7.4.3",
     "prettyjson": "^1.2.1",
-    "sequelize": "^4.38.0",
+    "sequelize": "^5.15.1",
     "vue-apollo": "^3.0.0-beta.19"
   }
 }
